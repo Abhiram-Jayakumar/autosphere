@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ vehicle.title }} Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">{{ vehicle.title }} Details</h2>
+
+        <div class="card">
+            {% if vehicle.image %}
+                <img src="{{ vehicle.image.url }}" class="card-img-top" alt="{{ vehicle.title }}">
+            {% else %}
+                <p class="text-center">No Image Available</p>
+            {% endif %}
+            
+            <div class="card-body">
+                <h5 class="card-title">{{ vehicle.brand }} - {{ vehicle.model }}</h5>
+                <p><strong>Year:</strong> {{ vehicle.year }}</p>
+                <p><strong>Price:</strong> ₹{{ vehicle.price }}</p>
+                <p><strong>Fuel Type:</strong> {{ vehicle.fuel_type }}</p>
+                <p><strong>Transmission:</strong> {{ vehicle.transmission }}</p>
+                <p><strong>Description:</strong> {{ vehicle.description }}</p>
+
+                {% if features %}
+                    <h4>Additional Features</h4>
+                    <p><strong>Condition:</strong> {{ features.condition }}</p>
+                    <p><strong>Color:</strong> {{ features.color }}</p>
+                    <p><strong>Seating Capacity:</strong> {{ features.seating_capacity }}</p>
+                    <p><strong>Engine Capacity:</strong> {{ features.engine_capacity }}</p>
+                    <p><strong>Fuel Tank Capacity:</strong> {{ features.fuel_tank_capacity }}L</p>
+                    <p><strong>Safety Rating:</strong> {{ features.safety_rating }} / 5</p>
+                    <p><strong>GPS Enabled:</strong> {% if features.gps_enabled %}Yes{% else %}No{% endif %}</p>
+                    <p><strong>Bluetooth Connectivity:</strong> {% if features.bluetooth_connectivity %}Yes{% else %}No{% endif %}</p>
+                {% endif %}
+
+                {% if vehicle.vehicle_type == "sale" %}
+                    <a href="{% url 'Customer:book_test_drive' vehicle.id %}" class="btn btn-primary">Book Test Drive</a>
+                {% elif vehicle.vehicle_type == "rent" %}
+                    <a href="{% url 'Customer:book_rental' vehicle.id %}" class="btn btn-success">Rent Now</a>
+                {% endif %}
+
+                {% if rental_feedbacks %}
+                    <h4 class="mt-4">Customer Feedback</h4>
+                    <ul class="list-group">
+                        {% for feedback in rental_feedbacks %}
+                            <li class="list-group-item">
+                                <strong>{{ feedback.customer.name }}:</strong> {{ feedback.feedback }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

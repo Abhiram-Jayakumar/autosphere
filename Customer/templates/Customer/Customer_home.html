@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer-Home Page</title>
+</head>
+<body>
+    <h1>Customer Home</h1>
+    <a href="{% url 'Customer:add_vehicle'%}">add_vehicle</a>
+    <br>
+    <a href="{% url 'Customer:customer_vehicles'%}">customer_vehicles</a>
+    <br>
+    <a href="{% url 'Customer:view_vehicles'%}">view_vehicles</a>
+    <br>
+    <a href="{% url 'Customer:customer_bookings'%}">customer_bookings</a>
+    <br>
+    <a href="{% url 'Customer:customer_vehicle_bookings'%}">customer_vehicle_bookings</a>
+    <br>
+    <a href="{% url 'Customer:customer_profile'%}">customer_profile</a>
+    <br>
+    <a href="{% url 'Customer:index'%}">LOGOUT</a>
+    <br>
+</body>
+</html>

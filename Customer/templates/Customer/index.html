@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autosphere | Buy, Sell & Rent Vehicles Online</title>
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2954d4;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(rgba(26, 32, 44, 0.7), rgba(26, 32, 44, 0.4)), url('https://i.postimg.cc/9Fwmjb2q/istockphoto-486827324-612x612.webp') no-repeat center center;
+            background-size: cover;
+            color: white;
+            padding-top: 80px;
+        }
+        
+        .hero-content {
+            max-width: 600px;
+            margin-right: auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .search-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+        
+        .search-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .search-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--gray);
+            position: relative;
+        }
+        
+        .search-tab.active {
+            color: var(--primary);
+        }
+        
+        .search-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .search-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .form-group {
+            flex: 1 1 200px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--light-gray);
+            background-color: var(--light);
+            font-size: 16px;
+        }
+        
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 25px;
+        }
+        
+        .search-btn:hover {
+            background-color: #2954d4;
+        }
+        
+        .features {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            background-color: rgba(53, 99, 233, 0.1);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+        }
+        
+        .vehicles {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+        
+        .vehicle-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .vehicle-tab {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .vehicle-tab.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .vehicle-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .vehicle-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .vehicle-image {
+            height: 200px;
+            background: url('/api/placeholder/400/320') no-repeat center;
+            background-size: cover;
+        }
+        
+        .vehicle-details {
+            padding: 20px;
+        }
+        
+        .vehicle-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .vehicle-title h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .vehicle-year {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .vehicle-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .vehicle-spec {
+            display: flex;
+            align-items: center;
+        }
+        
+        .vehicle-spec i {
+            color: var(--gray);
+            margin-right: 8px;
+        }
+        
+        .vehicle-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .price-type {
+            font-size: 14px;
+            font-weight: normal;
+            color: var(--gray);
+        }
+        
+        .testimonials {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .testimonials-container {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scrollbar-width: none;
+        }
+        
+        .testimonials-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .testimonial-card {
+            flex: 0 0 400px;
+            background-color: var(--light);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            background-color: var(--light-gray);
+        }
+        
+        .testimonial-info h4 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .testimonial-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .testimonial-rating {
+            color: gold;
+            margin-bottom: 15px;
+        }
+        
+        .cta {
+            padding: 80px 0;
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-cta {
+            padding: 15px 30px;
+            font-size: 18px;
+        }
+        
+        .btn-white {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        .btn-white:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+        
+        .social-link:hover {
+            background-color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .hero {
+                height: auto;
+                padding: 150px 0 80px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">Auto<span>Sphere</span></a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Buy</a></li>
+                    <li><a href="#">Sell</a></li>
+                    <li><a href="#">Rent</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div>
+                    <a href="{% url 'Customer:Login'%}" class="btn btn-outline">Sign In</a>
+                    <a href="{% url 'Customer:registration'%}" class="btn btn-primary">Register</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+<br><br><br>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Find the Perfect Vehicle for Your Journey</h1>
+                <p>Autosphere makes it easy to buy, sell, or rent vehicles online. Browse thousands of listings and find your dream car today!</p>
+                <a href="#" class="btn btn-primary">Explore Vehicles</a>
+            </div>
+            
+            <!-- Search Form -->
+            <div class="search-container">
+                <div class="search-tabs">
+                    <div class="search-tab active">Buy</div>
+                    <div class="search-tab">Sell</div>
+                    <div class="search-tab">Rent</div>
+                </div>
+                <form class="search-form">
+                    <div class="form-group">
+                        <label>Vehicle Type</label>
+                        <select>
+                            <option value="">All Types</option>
+                            <option value="sedan">Sedan</option>
+                            <option value="suv">SUV</option>
+                            <option value="truck">Truck</option>
+                            <option value="sports">Sports Car</option>
+                            <option value="luxury">Luxury</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Brand</label>
+                        <select>
+                            <option value="">All Brands</option>
+                            <option value="toyota">Toyota</option>
+                            <option value="honda">Honda</option>
+                            <option value="bmw">BMW</option>
+                            <option value="mercedes">Mercedes-Benz</option>
+                            <option value="audi">Audi</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price Range</label>
+                        <select>
+                            <option value="">Any Price</option>
+                            <option value="10000">Under $10,000</option>
+                            <option value="20000">Under $20,000</option>
+                            <option value="30000">Under $30,000</option>
+                            <option value="50000">Under $50,000</option>
+                            <option value="100000">Under $100,000</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Year</label>
+                        <select>
+                            <option value="">Any Year</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="older">2019 & Older</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex-basis: 100%">
+                        <button type="submit" class="search-btn">Search Vehicles</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Autosphere?</h2>
+                <p>We make vehicle transactions simple, secure, and convenient for buyers, sellers, and renters.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">★</div>
+                    <h3>Verified Listings</h3>
+                    <p>All vehicles and sellers are verified to ensure authenticity and security in every transaction.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Best Price Guarantee</h3>
+                    <p>We ensure competitive pricing and match any legitimate offers from other platforms.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Detailed Inspections</h3>
+                    <p>Every vehicle undergoes a thorough inspection process to identify any potential issues.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Easy Documentation</h3>
+                    <p>We handle all the paperwork for buying, selling, or renting vehicles, making the process hassle-free.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Secure Payments</h3>
+                    <p>Our secure payment system protects both buyers and sellers throughout the transaction.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍💻</div>
+                    <h3>24/7 Support</h3>
+                    <p>Our customer service team is available around the clock to assist with any issues or questions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Vehicles Section -->
+    <section class="vehicles">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Vehicles</h2>
+                <p>Explore our handpicked selection of top-quality vehicles available for purchase or rental.</p>
+            </div>
+            <div class="vehicle-tabs">
+                <div class="vehicle-tab active">All</div>
+                <div class="vehicle-tab">For Sale</div>
+                <div class="vehicle-tab">For Rent</div>
+                <div class="vehicle-tab">New Arrivals</div>
+                <div class="vehicle-tab">Best Deals</div>
+            </div>
+            <div class="vehicles-grid">
+                <!-- Vehicle Card 1 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image"></div>
+                    <div class="vehicle-details">
+                        <div class="vehicle-title">
+                            <h3>BMW X5</h3>
+                            <span class="vehicle-year">2023</span>
+                        </div>
+                        <div class="vehicle-specs">
+                            <div class="vehicle-spec">
+                                <i>🛢️</i> Diesel
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>⚙️</i> Automatic
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>🛣️</i> 15,000 mi
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>💪</i> 320 HP
+                            </div>
+                        </div>
+                        <div class="vehicle-price">
+                            $45,900 <span class="price-type">For Sale</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vehicle Card 2 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image"></div>
+                    <div class="vehicle-details">
+                        <div class="vehicle-title">
+                            <h3>Mercedes-Benz C-Class</h3>
+                            <span class="vehicle-year">2022</span>
+                        </div>
+                        <div class="vehicle-specs">
+                            <div class="vehicle-spec">
+                                <i>🛢️</i> Petrol
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>⚙️</i> Automatic
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>🛣️</i> 10,200 mi
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>💪</i> 255 HP
+                            </div>
+                        </div>
+                        <div class="vehicle-price">
+                            $38,500 <span class="price-type">For Sale</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vehicle Card 3 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image"></div>
+                    <div class="vehicle-details">
+                        <div class="vehicle-title">
+                            <h3>Tesla Model 3</h3>
+                            <span class="vehicle-year">2023</span>
+                        </div>
+                        <div class="vehicle-specs">
+                            <div class="vehicle-spec">
+                                <i>⚡</i> Electric
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>⚙️</i> Automatic
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>🛣️</i> 5,500 mi
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>💪</i> 283 HP
+                            </div>
+                        </div>
+                        <div class="vehicle-price">
+                            $49,900 <span class="price-type">For Sale</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vehicle Card 4 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image"></div>
+                    <div class="vehicle-details">
+                        <div class="vehicle-title">
+                            <h3>Audi Q7</h3>
+                            <span class="vehicle-year">2022</span>
+                        </div>
+                        <div class="vehicle-specs">
+                            <div class="vehicle-spec">
+                                <i>🛢️</i> Petrol
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>⚙️</i> Automatic
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>🛣️</i> 12,800 mi
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>💪</i> 335 HP
+                            </div>
+                        </div>
+                        <div class="vehicle-price">
+                            $150 <span class="price-type">Per Day</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vehicle Card 5 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image"></div>
+                    <div class="vehicle-details">
+                        <div class="vehicle-title">
+                            <h3>Porsche 911</h3>
+                            <span class="vehicle-year">2021</span>
+                        </div>
+                        <div class="vehicle-specs">
+                            <div class="vehicle-spec">
+                                <i>🛢️</i> Petrol
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>⚙️</i> Automatic
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>🛣️</i> 8,900 mi
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>💪</i> 443 HP
+                            </div>
+                        </div>
+                        <div class="vehicle-price">
+                            $250 <span class="price-type">Per Day</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Vehicle Card 6 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image"></div>
+                    <div class="vehicle-details">
+                        <div class="vehicle-title">
+                            <h3>Toyota RAV4</h3>
+                            <span class="vehicle-year">2023</span>
+                        </div>
+                        <div class="vehicle-specs">
+                            <div class="vehicle-spec">
+                                <i>🛢️</i> Hybrid
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>⚙️</i> Automatic
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>🛣️</i> 3,200 mi
+                            </div>
+                            <div class="vehicle-spec">
+                                <i>💪</i> 219 HP
+                            </div>
+                        </div>
+                        <div class="vehicle-price">
+                            $33,700 <span class="price-type">For Sale</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="#" class="btn btn-primary">View All Vehicles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Users Say</h2>
+                <p>Hear from people who have bought, sold, or rented vehicles through Autosphere.</p>
+            </div>
+            <div class="testimonials-container">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-info">
+                            <h4>John Davis</h4>
+                            <p>Bought a BMW X5</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p>"Autosphere made buying my dream car a breeze. The verification process gave me confidence, and I found the perfect BMW at a great price. The paperwork was handled seamlessly!"</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Sold a Mercedes C-Class</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p>"I was hesitant about selling my car online, but Autosphere made it so simple. I got a fair price, and they handled all the documentation. The transaction was secure and fast!"</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-info">
+                            <h4>Michael Roberts</h4>
+                            <p>Rented an Audi Q7</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">★★★★★</div>
+                    <p>"Renting through Autosphere was a premium experience. The Q7 was in perfect condition, and the process was so easy. Will definitely use the service again for my next vacation!"</p>
+                </div>
+                
+                <!-- Testimonial 4 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar"></div>
+                        <div class="testimonial-info">
+                            <h4>Emily Wilson</h4>
+                            <p>Bought a Tesla Model 3</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-rating">★★★★☆</div>
+                    <p>"Great platform for finding electric vehicles. The detailed information about the Tesla I purchased was accurate, and the customer service team was helpful throughout the process."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Get Started?</h2>
+            <p>Join thousands of satisfied users who buy, sell, and rent vehicles on Autosphere every day.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn btn-cta btn-white">Sell Your Vehicle</a>
+                <a href="#" class="btn btn-cta btn-outline">Browse Vehicles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3>Autosphere</h3>
+                    <p>The most trusted marketplace for buying, selling, and renting vehicles online.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">f</a>
+                        <a href="#" class="social-link">t</a>
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Buy a Vehicle</a></li>
+                        <li><a href="#">Sell a Vehicle</a></li>
+                        <li><a href="#">Rent a Vehicle</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Vehicle Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Sedans</a></li>
+                        <li><a href="#">SUVs</a></li>
+                        <li><a href="#">Sports Cars</a></li>
+                        <li><a href="#">Luxury Cars</a></li>
+                        <li><a href="#">Electric Vehicles</a></li>
+                        <li><a href="#">Trucks</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Autosphere. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

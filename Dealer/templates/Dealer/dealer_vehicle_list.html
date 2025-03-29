@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicles for Sale</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Vehicles Available for Sale</h2>
+        
+        {% if messages %}
+        <div class="alert alert-dismissible fade show">
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <div class="row mt-3">
+            {% for vehicle in vehicles %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ vehicle.image.url }}" class="card-img-top" alt="{{ vehicle.brand }} {{ vehicle.model }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ vehicle.brand }} - {{ vehicle.model }}</h5>
+                        <p class="card-text"><strong>Price:</strong> ₹{{ vehicle.price }} Lakh</p>
+                        <p class="card-text"><strong>Year:</strong> {{ vehicle.year }}</p>
+                        <a href="{% url 'Dealer:dealer_vehicle_detail' vehicle.id %}" class="btn btn-info btn-sm w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">No vehicles available for sale.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

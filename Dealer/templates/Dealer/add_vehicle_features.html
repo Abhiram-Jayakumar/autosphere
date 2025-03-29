@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vehicle Features - AutoSphere</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .checkbox-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn {
+            margin-top: 15px;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            background-color: #28a745;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Add Features for {{ vehicle.brand }} {{ vehicle.model }}</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Previous Owners:</label>
+            <input type="number" name="previous_owners" min="0" required>
+
+            <label>Condition:</label>
+            <select name="condition" required>
+                <option value="New">New</option>
+                <option value="Used">Used</option>
+            </select>
+
+            <label>Color:</label>
+            <input type="text" name="color" required>
+
+            <label>Seating Capacity:</label>
+            <input type="number" name="seating_capacity" min="1" required>
+
+            <label>Engine Capacity (cc):</label>
+            <input type="text" name="engine_capacity">
+
+            <label>Fuel Tank Capacity (L):</label>
+            <input type="number" name="fuel_tank_capacity">
+
+            <label>Additional Features (comma-separated):</label>
+            <textarea name="features"></textarea>
+
+            <label>Safety Rating (1.0 - 5.0):</label>
+            <input type="number" name="safety_rating" min="1" max="5" step="0.1">
+
+            <div class="checkbox-group">
+                <input type="checkbox" name="gps_enabled" id="gps_enabled">
+                <label for="gps_enabled">GPS Enabled</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" name="bluetooth_connectivity" id="bluetooth_connectivity">
+                <label for="bluetooth_connectivity">Bluetooth Connectivity</label>
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" name="negotiable" id="negotiable" checked>
+                <label for="negotiable">Price Negotiable</label>
+            </div>
+
+            <label>Insurance Valid Till:</label>
+            <input type="date" name="insurance_valid_till">
+
+            <div class="checkbox-group">
+                <input type="checkbox" name="warranty_available" id="warranty_available">
+                <label for="warranty_available">Warranty Available</label>
+            </div>
+
+            <button type="submit" class="btn">Save Features</button>
+        </form>
+    </div>
+
+</body>
+</html>

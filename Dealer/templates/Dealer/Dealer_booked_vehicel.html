@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Vehicle</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Contacted</th>
+                <th>Interest</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in test_drive_bookings %}
+            <tr>
+                <td>
+                    <img src="{{ booking.vehicle.image.url }}" alt="{{ booking.vehicle.title }}" style="width: 100px; height: 60px; object-fit: cover;">
+                    {{ booking.vehicle.brand }} - {{ booking.vehicle.model }}
+                </td>
+                <td>{{ booking.date }}</td>
+                <td>{{ booking.time }}</td>
+                <td>
+                    {% if booking.status == "Pending" %}
+                        <span class="text-warning">Pending</span>
+                    {% elif booking.status == "Accepted" %}
+                        <span class="text-success">Accepted</span>
+                    {% else %}
+                        <span class="text-danger">Rejected</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="badge {% if booking.Contancted == 'Contacted' %} bg-success {% else %} bg-warning {% endif %}">
+                        {{ booking.Contancted }}
+                    </span>
+                </td>
+                <td>
+                    {% if booking.Contancted == "Contacted" and booking.Intrested == "Pending" %}
+                        <a href="{% url 'Dealer:mark_interested_dealer' booking.id %}" class="btn btn-success btn-sm">Interested</a>
+                        <a href="{% url 'Dealer:mark_not_interested_dealer' booking.id %}" class="btn btn-danger btn-sm">Not Interested</a>
+                    {% elif booking.Intrested == "Intrested" %}
+                        <span class="text-success">Interested</span>
+                    {% elif booking.Intrested == "Not-Intrested" %}
+                        <span class="text-danger">Not Interested</span>
+                    {% else %}
+                        <span class="text-warning">Pending</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if booking.Intrested == "Intrested" and booking.payment_status == "Pending" %}
+                        <a href="{% url 'Dealer:make_payment_dealer' booking.id %}" class="btn btn-primary btn-sm">Make Payment</a>
+                    {% elif booking.payment_status == "Paid" %}
+                        <span class="text-success">Paid</span>
+                    {% endif %}
+                    <a href="{% url 'Dealer:dealer_vehicle_detail' booking.vehicle.id %}" class="btn btn-info btn-sm">View Vehicle</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="text-center">No test drive bookings found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+</html>

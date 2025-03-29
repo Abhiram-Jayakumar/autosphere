@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealer Bookings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">Dealer Bookings</h2>
+
+        <!-- Success & Error Messages -->
+        {% if messages %}
+        <div class="alert alert-dismissible fade show">
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Test Drive Bookings -->
+        <h3 class="mt-4">Test Drive Bookings</h3>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Customer</th>
+                    <th>Vehicle</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                    <th>IS intrested or not</th>
+                    <th>paid amount</th>
+                    <th>Payment Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in test_drives %}
+                <tr>
+                    <td>{{ booking.customer.name }}</td>
+                    <td>{{ booking.vehicle.brand }} - {{ booking.vehicle.model }}</td>
+                    <td>{{ booking.date }}</td>
+                    <td>{{ booking.time }}</td>
+                    <td>
+                        <strong>{{ booking.status }}</strong>
+                        {% if booking.Contancted == "Contacted" %}
+                            <span class="badge bg-success">Contacted</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if booking.status == "Pending" %}
+                            <a href="{% url 'Dealer:approve_dealer_booking' 'test_drive' booking.id %}" class="btn btn-success btn-sm">Approve</a>
+                            <a href="{% url 'Dealer:reject_dealer_booking' 'test_drive' booking.id %}" class="btn btn-danger btn-sm">Reject</a>
+                        {% elif booking.status == "Accepted" and booking.Contancted == "Pending" %}
+                            <a href="{% url 'Dealer:mark_as_contacted' booking.id %}" class="btn btn-info btn-sm">Mark as Contacted</a>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ booking.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{booking.Intrested}}</td>
+                    <td>{{booking.Payment_amount}}</td>
+                    <td>{{booking.payment_status}}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No test drive bookings found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Rental Bookings -->
+        <h3 class="mt-4">Rental Bookings</h3>
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Customer</th>
+                    <th>Vehicle</th>
+                    <th>Rental Date</th>
+                    <th>Return Date</th>
+                    <th>Accessories</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                    <th>Payment Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in rentals %}
+                <tr>
+                    <td>{{ booking.customer.name }}</td>
+                    <td>{{ booking.vehicle.brand }} - {{ booking.vehicle.model }}</td>
+                    <td>{{ booking.rental_date }}</td>
+                    <td>{{ booking.return_date }}</td>
+                    <td>{{ booking.accessories_needed|default:"None" }}</td>
+                    <td><strong>{{ booking.status }}</strong></td>
+                    <td>
+                        {% if booking.status == "Pending" %}
+                            <a href="{% url 'Dealer:approve_dealer_booking' 'rental' booking.id %}" class="btn btn-success btn-sm">Approve</a>
+                            <a href="{% url 'Dealer:reject_dealer_booking' 'rental' booking.id %}" class="btn btn-danger btn-sm">Reject</a>
+                        {% else %}
+                            <span class="badge bg-secondary">{{ booking.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{booking.payment_status}}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">No rental bookings found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Details</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">{{ vehicle.brand }} - {{ vehicle.model }}</h2>
+
+        <div class="card p-4 mt-3">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    {% if vehicle.image %}
+                        <img src="{{ vehicle.image.url }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" class="img-fluid rounded">
+                    {% else %}
+                        <p class="text-muted">No image available</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Brand:</strong> {{ vehicle.brand }}</p>
+                    <p><strong>Model:</strong> {{ vehicle.model }}</p>
+                    <p><strong>Price:</strong> ₹{{ vehicle.price }} Lakh</p>
+                    <p><strong>Year:</strong> {{ vehicle.year }}</p>
+                    <p><strong>Mileage:</strong> {{ vehicle.mileage }} kmpl</p>
+                    <p><strong>Fuel Type:</strong> {{ vehicle.fuel_type }}</p>
+                    <p><strong>Transmission:</strong> {{ vehicle.transmission }}</p>
+                    <p><strong>Condition:</strong> {{ vehicle.features.condition }}</p>
+                    <p><strong>Color:</strong> {{ vehicle.features.color }}</p>
+                    <p><strong>Seating Capacity:</strong> {{ vehicle.features.seating_capacity }}</p>
+                    <p><strong>Engine Capacity:</strong> {{ vehicle.features.engine_capacity }}</p>
+                    <p><strong>Fuel Tank Capacity:</strong> {{ vehicle.features.fuel_tank_capacity }} L</p>
+                    <p><strong>Safety Rating:</strong> {{ vehicle.features.safety_rating }}/5</p>
+                    <p><strong>GPS:</strong> {% if vehicle.features.gps_enabled %} Yes {% else %} No {% endif %}</p>
+                    <p><strong>Bluetooth:</strong> {% if vehicle.features.bluetooth_connectivity %} Yes {% else %} No {% endif %}</p>
+                    <p><strong>Insurance Valid Till:</strong> {{ vehicle.features.insurance_valid_till }}</p>
+                    <p><strong>Warranty Available:</strong> {% if vehicle.features.warranty_available %} Yes {% else %} No {% endif %}</p>
+                    <p><strong>Negotiable Price:</strong> {% if vehicle.features.negotiable %} Yes {% else %} No {% endif %}</p>
+                </div>
+            </div>
+
+            <hr>
+            <h4>Features:</h4>
+            <p>{{ vehicle.features.features|default:"No additional features listed." }}</p>
+
+            <div class="text-center mt-3">
+                <a href="{% url 'Dealer:book_test_drive' vehicle.id %}" class="btn btn-primary">Book Test Drive</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Payment - Dealer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Make Payment for Test Drive Booking</h2>
+        <div class="card shadow mt-4">
+            <img src="{{ booking.vehicle.image.url }}" class="card-img-top" alt="{{ booking.vehicle.brand }} {{ booking.vehicle.model }}" style="height: 300px; object-fit: cover;">
+            <div class="card-body">
+                <h4 class="card-title">{{ booking.vehicle.brand }} - {{ booking.vehicle.model }}</h4>
+                <p><strong>Vehicle Price:</strong> ₹{{ vehicle_price_lakh }} Lakhs</p>
+                <p><strong>Advance Payment (10%):</strong> ₹{{ advance_amount|floatformat:2 }}</p>
+                <p><strong>Test Drive Date:</strong> {{ booking.date }}</p>
+                <p><strong>Test Drive Time:</strong> {{ booking.time }}</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Pay ₹{{ advance_amount|floatformat:2 }}</button>
+                </form>
+                
+                <a href="{% url 'Dealer:Dealer_booked_vehicel' %}" class="btn btn-secondary mt-2">Cancel</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

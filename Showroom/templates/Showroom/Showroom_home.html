@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>showroom home page</h1>
+    <a href="{% url 'Showroom:add_vehicle' %}">Add Vehicle</a><br>
+    <a href="{% url 'Showroom:showroom_vehicles' %}">showroom_vehicles</a><br>
+    <a href="{% url 'Showroom:showroom_bookings' %}">showroom_bookings</a><br>
+    <a href="{% url 'Showroom:showroom_profile' %}">showroom_profile</a><br>
+    <a href="{% url 'Showroom:showroom_dashboard' %}">showroom_dashboard</a><br>
+    <a href="{% url 'Customer:index' %}">Logout</a><br>
+</body>
+</html>

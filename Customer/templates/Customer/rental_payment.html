@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Rental Payment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Make Payment for Rental</h2>
+        <div class="card p-4 mt-3">
+            <p><strong>Vehicle:</strong> {{ booking.vehicle.brand }} - {{ booking.vehicle.model }}</p>
+            <p><strong>Rental Period:</strong> {{ booking.rental_date }} to {{ booking.return_date }}</p>
+            <p><strong>Rental Amount:</strong> ₹{{ rental_amount }}</p>
+
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Pay ₹{{ rental_amount }}</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

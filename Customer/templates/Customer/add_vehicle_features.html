@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicel Features</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <label>Previous Owners:</label>
+        <input type="number" name="previous_owners" required><br>
+    
+        <label>Condition:</label>
+        <select name="condition">
+            <option value="New">New</option>
+            <option value="Used">Used</option>
+        </select><br>
+    
+        <label>Color:</label>
+        <input type="text" name="color" required><br>
+    
+        <label>Seating Capacity:</label>
+        <input type="number" name="seating_capacity" required><br>
+    
+        <label>Engine Capacity (cc):</label>
+        <input type="text" name="engine_capacity"><br>
+    
+        <label>Fuel Tank Capacity (liters):</label>
+        <input type="number" name="fuel_tank_capacity"><br>
+    
+        <label>Additional Features (comma-separated):</label>
+        <input type="text" name="features"><br>
+    
+        <label>Safety Rating (1-5):</label>
+        <input type="number" name="safety_rating" step="0.1"><br>
+    
+        <label>GPS Enabled:</label>
+        <input type="checkbox" name="gps_enabled"><br>
+    
+        <label>Bluetooth Connectivity:</label>
+        <input type="checkbox" name="bluetooth_connectivity"><br>
+    
+        <label>Negotiable Price:</label>
+        <input type="checkbox" name="negotiable"><br>
+    
+        <label>Insurance Valid Till:</label>
+        <input type="date" name="insurance_valid_till"><br>
+    
+        <label>Warranty Available:</label>
+        <input type="checkbox" name="warranty_available"><br>
+    
+        <button type="submit">Save Features</button>
+    </form>
+    
+</body>
+</html>

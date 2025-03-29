@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center">My Bookings</h2>
+
+        <ul class="nav nav-tabs mt-3">
+            <li class="nav-item">
+                <a class="nav-link active" id="testdrive-tab" data-bs-toggle="tab" href="#testdrive">Test Drives</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="rental-tab" data-bs-toggle="tab" href="#rental">Rentals</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-3">
+            <!-- Test Drive Bookings -->
+            <div class="tab-pane fade show active" id="testdrive">
+                <h4>Test Drive Bookings</h4>
+                <table class="table table-bordered mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Vehicle</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Payment Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in test_drives %}
+                        <tr>
+                            <td>{{ booking.vehicle.title }}</td>
+                            <td>{{ booking.date }}</td>
+                            <td>{{ booking.time }}</td>
+                            <td>
+                                {% if booking.status == "Pending" %}
+                                    <span class="text-warning">Pending</span>
+                                {% elif booking.status == "Accepted" %}
+                                    <span class="text-success">Accepted</span>
+                                {% else %}
+                                    <span class="text-danger">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if booking.payment_status == "Pending" %}
+                                    {% if booking.Contancted == "Contacted" and booking.Intrested == "Pending" %}
+                                        <a href="{% url 'Customer:mark_interested' booking.id %}" class="btn btn-success btn-sm">
+                                            Mark as Interested
+                                        </a>
+                                        <a href="{% url 'Customer:mark_not_interested' booking.id %}" class="btn btn-danger btn-sm">
+                                            Mark as Not Interested
+                                        </a>
+                                    {% elif booking.Intrested == "Intrested" %}
+                                        <a href="{% url 'Customer:make_payment' booking.id %}" class="btn btn-primary btn-sm">
+                                            Make Payment
+                                        </a>
+                                    {% elif booking.Intrested == "Not-Intrested" %}
+                                        <span class="text-danger">Not Interested</span>
+                                    {% else %}
+                                        <span class="text-warning">Pending</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-success">Paid</span>
+                                {% endif %}
+                            </td>
+                            
+                            
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center">No test drive bookings found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Rental Bookings -->
+            <div class="tab-pane fade" id="rental">
+                <h4>Rental Bookings</h4>
+                <table class="table table-bordered mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Vehicle</th>
+                            <th>Rental Date</th>
+                            <th>Return Date</th>
+                            <th>Accessories</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Payment Status</th>
+                            <th>Feedback</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in rentals %}
+                        <tr>
+                            <td>{{ booking.vehicle.title }}</td>
+                            <td>{{ booking.rental_date }}</td>
+                            <td>{{ booking.return_date }}</td>
+                            <td>{{ booking.accessories_needed|default:"None" }}</td>
+                            <td>
+                                {% if booking.status == "Pending" %}
+                                    <span class="text-warning">Pending</span>
+                                {% elif booking.status == "Accepted" %}
+                                    <span class="text-success">Accepted</span>
+                                {% else %}
+                                    <span class="text-danger">Rejected</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ booking.vehicle.price }}</td>
+                            <td>
+                                {% if booking.payment_status == "Pending" %}
+                                    {% if booking.status == "Accepted" %}
+                                        <a href="{% url 'Customer:make_rental_payment' booking.id %}" class="btn btn-primary btn-sm">
+                                            Pay Rental Amount
+                                        </a>
+                                    {% else %}
+                                        <span class="text-danger">Pending</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-success">Paid</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if booking.payment_status == "Paid" %}
+                                    {% if booking.feedback %}
+                                        <span class="text-info">{{ booking.feedback }}</span>
+                                    {% else %}
+                                        <a href="{% url 'Customer:add_rental_feedback' booking.id %}" class="btn btn-success btn-sm">
+                                            Add Feedback
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-danger">Pending</span>
+                                {% endif %}
+                            </td>
+                            
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center">No rental bookings found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
