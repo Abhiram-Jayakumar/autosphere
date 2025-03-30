@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">System Performance Overview</h2>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Vehicles for Sale</h5>
+                        <p class="card-text fs-4">{{ total_sale_vehicles }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-secondary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Vehicles for Rent</h5>
+                        <p class="card-text fs-4">{{ total_rental_vehicles }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Sales</h5>
+                        <p class="card-text fs-4">{{ total_sales }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Rentals</h5>
+                        <p class="card-text fs-4">{{ total_rentals }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Revenue</h5>
+                        <p class="card-text fs-4">₹ {{ total_revenue|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mt-4">Top Performers</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Top Selling Vehicle</td>
+                    <td>
+                        {% if top_selling_vehicle %}
+                            {{ top_selling_vehicle.vehicle__brand }} {{ top_selling_vehicle.vehicle__model }} ({{ top_selling_vehicle.count }} Sales)
+                        {% else %}
+                            No data available
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Top Selling Dealer</td>
+                    <td>
+                        {% if top_selling_dealer %}
+                            {{ top_selling_dealer.name }} ({{ top_selling_dealer.total_sales }} Sales)
+                        {% else %}
+                            No data available
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Customer with Most Bookings</td>
+                    <td>
+                        {% if top_booking_customer %}
+                            {{ top_booking_customer.name }} ({{ top_booking_customer.total_bookings }} Bookings)
+                        {% else %}
+                            No data available
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

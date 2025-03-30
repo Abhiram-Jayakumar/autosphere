@@ -2,10 +2,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.timezone import now
 from django.contrib import messages
 from Admin.models import Admin
-from Customer.models import Customer, RentalBooking, TestDriveBooking, Vehicle, VehicleFeatures
+from Customer.models import Complaint, Customer, RentalBooking, TestDriveBooking, Vehicle, VehicleFeatures
 from Dealer.models import Dealer
 from Showroom.models import Showroom
 from decimal import Decimal
+from django.db.models import Sum
 # Create your views here.
 
 def index(request):
@@ -16,6 +17,8 @@ def index(request):
 
 def registartion(request):
     return render(request,'Customer/registration.html')
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 def customer_registration(request):
@@ -32,7 +35,7 @@ def customer_registration(request):
             name=name,
             email=email,
             phone=phone,
-            password=password,  # Not hashed as requested
+            password=password,  
             id_proof_number=id_proof_number,
             address=address,
             profile_image=profile_image,
@@ -44,7 +47,7 @@ def customer_registration(request):
     
     return render(request, 'Customer/customer_register.html')
 
-##########################Login############
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def login(request):
     if request.method=="POST":
@@ -77,7 +80,7 @@ def login(request):
     else:
         return render(request, "Customer/Login.html")
     
-    #####customer home#######
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
 def Customer_home(request):
     return render(request,'Customer/Customer_home.html')
@@ -99,10 +102,9 @@ def add_vehicle(request):
         transmission = request.POST.get('transmission')
         image = request.FILES.get('image')
 
-        # Retrieve session user ID
         dealer_id = request.session.get('did')
         showroom_id = request.session.get('sid')
-        customer_id = request.session.get('cid')  # NEW: Get Customer ID
+        customer_id = request.session.get('cid') 
 
         print(f"Session Values - Dealer ID: {dealer_id}, Showroom Dealer ID: {showroom_id}, Customer ID: {customer_id}")
 
@@ -148,13 +150,13 @@ def add_vehicle(request):
                 created_at=now(),
             )
 
-        elif customer_id:  # NEW: Allow Customers to Add Vehicles
+        elif customer_id: 
             customer = Customer.objects.filter(id=customer_id).first()
             if not customer:
                 return render(request, "Customer/add_vehicle.html", {"message": "Customer not found!"})
 
             vehicle = Vehicle(
-                owner=customer,  # Assign to Customer
+                owner=customer,  
                 title=title,
                 brand=brand,
                 model=model,
@@ -181,12 +183,11 @@ def add_vehicle(request):
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def customer_vehicles(request):
-    customer_id = request.session.get('cid')  # Get logged-in customer's ID
+    customer_id = request.session.get('cid')  
 
     if not customer_id:
-        return redirect('Customer:customer_login')  # Redirect to login if not authenticated
-
-    vehicles = Vehicle.objects.filter(owner_id=customer_id)  # Get vehicles added by the customer
+        return redirect('Customer:customer_login')  
+    vehicles = Vehicle.objects.filter(owner_id=customer_id)  
 
     return render(request, "Customer/customer_vehicles.html", {"vehicles": vehicles})
 
@@ -202,7 +203,7 @@ def add_vehicle_features(request, vehicle_id):
         seating_capacity = request.POST.get('seating_capacity')
         engine_capacity = request.POST.get('engine_capacity')
         fuel_tank_capacity = request.POST.get('fuel_tank_capacity')
-        features = request.POST.get('features')  # User inputs comma-separated features
+        features = request.POST.get('features')  
         safety_rating = request.POST.get('safety_rating')
         gps_enabled = bool(request.POST.get('gps_enabled'))
         bluetooth_connectivity = bool(request.POST.get('bluetooth_connectivity'))
@@ -227,7 +228,7 @@ def add_vehicle_features(request, vehicle_id):
             warranty_available=warranty_available,
         )
 
-        return redirect('Customer:Customer_home')  # Redirect back to listing
+        return redirect('Customer:Customer_home') 
 
     return render(request, "Customer/add_vehicle_features.html", {"vehicle": vehicle})
 
@@ -235,7 +236,7 @@ def add_vehicle_features(request, vehicle_id):
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def view_vehicles(request):
-    vehicle_type = request.GET.get('type', 'sale')  # Default to sale
+    vehicle_type = request.GET.get('type', 'sale')  
     vehicles = Vehicle.objects.filter(vehicle_type=vehicle_type)
     return render(request, "Customer/view_vehicles.html", {"vehicles": vehicles, "vehicle_type": vehicle_type})
 
@@ -244,9 +245,8 @@ def view_vehicles(request):
 
 def vehicle_detail(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
-    features = VehicleFeatures.objects.filter(vehicle=vehicle).first()  # Fetch vehicle features if available
+    features = VehicleFeatures.objects.filter(vehicle=vehicle).first() 
 
-    # Fetch rental feedbacks and include related customer name
     rental_feedbacks = RentalBooking.objects.filter(vehicle=vehicle, feedback__isnull=False).select_related('customer')
 
     return render(
@@ -312,7 +312,7 @@ def book_rental(request, vehicle_id):
 
 def customer_bookings(request):
     if "cid" not in request.session:
-        return redirect("Customer:Login")  # Redirect if not logged in
+        return redirect("Customer:Login")  
 
     customer_id = request.session["cid"]
 
@@ -328,13 +328,11 @@ def customer_bookings(request):
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def customer_vehicle_bookings(request):
-    """Show all test drive bookings for vehicles added by the customer."""
     if "cid" not in request.session:
-        return redirect("Customer:Login")  # Redirect if not logged in
+        return redirect("Customer:Login") 
 
     customer_id = request.session["cid"]
 
-    # Fetch test drive bookings for customer's vehicles
     test_drives = TestDriveBooking.objects.filter(vehicle__owner_id=customer_id).order_by("-date", "-time")
 
     return render(
@@ -343,12 +341,12 @@ def customer_vehicle_bookings(request):
         {"test_drives": test_drives},
     )
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def approve_customer_booking(request, booking_id):
-    """Approve a test drive booking for a vehicle owned by the customer."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
     
-    # Ensure the customer is the vehicle owner
     if request.session.get("cid") != booking.vehicle.owner.id:
         return redirect("Customer:customer_vehicle_bookings")
 
@@ -357,12 +355,12 @@ def approve_customer_booking(request, booking_id):
     messages.success(request, "Booking approved successfully!")
     return redirect("Customer:customer_vehicle_bookings")
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def reject_customer_booking(request, booking_id):
-    """Reject a test drive booking for a vehicle owned by the customer."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
     
-    # Ensure the customer is the vehicle owner
     if request.session.get("cid") != booking.vehicle.owner.id:
         return redirect("Customer:customer_vehicle_bookings")
 
@@ -372,13 +370,12 @@ def reject_customer_booking(request, booking_id):
     return redirect("Customer:customer_vehicle_bookings")
 
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 def mark_contacted(request, booking_id):
-    """Mark a booking as 'Contacted' after approval."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
 
-    # Ensure only the vehicle owner can update the status
     if request.session.get("cid") != booking.vehicle.owner.id:
         return redirect("Customer:customer_vehicle_bookings")
 
@@ -387,10 +384,10 @@ def mark_contacted(request, booking_id):
     messages.success(request, "Customer has been marked as Contacted.")
     return redirect("Customer:customer_vehicle_bookings")
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 def mark_interested(request, booking_id):
-    """Update booking interest status to 'Interested'."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
 
     if request.session.get("cid") != booking.customer.id:
@@ -402,9 +399,10 @@ def mark_interested(request, booking_id):
     messages.success(request, "Marked as Interested!")
     return redirect("Customer:customer_bookings")
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def mark_not_interested(request, booking_id):
-    """Update booking interest status to 'Not-Interested'."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
 
     if request.session.get("cid") != booking.customer.id:
@@ -416,22 +414,19 @@ def mark_not_interested(request, booking_id):
     messages.error(request, "Marked as Not Interested.")
     return redirect("Customer:customer_bookings")
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 
 def make_payment(request, booking_id):
-    """Handle advance payment for test drive booking."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
 
-    # Convert price from lakhs to full rupees
-    vehicle_price = booking.vehicle.price * Decimal(100000)  # Convert 11.25 → 1125000
-
-    # Calculate 10% advance
-    advance_amount = vehicle_price * Decimal(0.1)  # 10% of price
+    vehicle_price = booking.vehicle.price * Decimal(100000)  
+    advance_amount = vehicle_price * Decimal(0.1) 
 
     if request.method == "POST":
-        # Assume payment is processed successfully
         booking.payment_status = "Paid"
-        booking.Payment_amount = advance_amount  # Store actual advance paid
+        booking.Payment_amount = advance_amount  
         booking.save()
         messages.success(request, f"Payment of ₹{advance_amount} successful!")
         return redirect("Customer:customer_bookings")
@@ -441,24 +436,21 @@ def make_payment(request, booking_id):
         "Customer/make_payment.html",
         {
             "booking": booking,
-            "vehicle_price_lakh": booking.vehicle.price,  # Still display in Lakhs
-            "advance_amount": advance_amount,  # Now correct in Rupees
+            "vehicle_price_lakh": booking.vehicle.price, 
+            "advance_amount": advance_amount,  
         },
     )
     
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def make_rental_payment(request, booking_id):
-    """Handle full rental payment processing."""
     booking = get_object_or_404(RentalBooking, id=booking_id)
 
-    # Full rental amount is the vehicle price
-    rental_amount = round(booking.vehicle.price, 2)  # No 10% deduction
+    rental_amount = round(booking.vehicle.price, 2) 
 
     if request.method == "POST":
-        # Process payment (assume successful)
         booking.payment_status = "Paid"
-        booking.Payment_amount = rental_amount  # Store full rental amount
+        booking.Payment_amount = rental_amount  
         booking.save()
         messages.success(request, "Rental payment successful!")
         return redirect("Customer:customer_bookings")
@@ -472,11 +464,11 @@ def make_rental_payment(request, booking_id):
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def edit_vehicle(request, vehicle_id):
-    customer_id = request.session.get('cid')  # Ensure user is logged in
+    customer_id = request.session.get('cid') 
     if not customer_id:
         return redirect("Customer:customer_login")
 
-    vehicle = get_object_or_404(Vehicle, id=vehicle_id, owner_id=customer_id)  # Fetch customer's vehicle
+    vehicle = get_object_or_404(Vehicle, id=vehicle_id, owner_id=customer_id) 
 
     if request.method == "POST":
         vehicle.title = request.POST["title"]
@@ -503,12 +495,14 @@ def edit_vehicle(request, vehicle_id):
 
 def customer_profile(request):
     if "cid" not in request.session:
-        return redirect("Customer:customer_login")  # Redirect to login if not authenticated
+        return redirect("Customer:customer_login")  
 
     customer = get_object_or_404(Customer, id=request.session["cid"])
     return render(request, "Customer/customer_profile.html", {"customer": customer})
 
-# Edit Customer Profile
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 def edit_customer_profile(request):
     if "cid" not in request.session:
         return redirect("Customer:customer_login")
@@ -529,7 +523,8 @@ def edit_customer_profile(request):
 
     return render(request, "Customer/edit_customer_profile.html", {"customer": customer})
 
-# Change Password
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 def change_customer_password(request):
     if "cid" not in request.session:
         return redirect("Customer:customer_login")
@@ -540,8 +535,8 @@ def change_customer_password(request):
         old_password = request.POST["old_password"]
         new_password = request.POST["new_password"]
 
-        if old_password == customer.password:  # Plain text password check (not secure)
-            customer.password = new_password  # Directly updating password (not secure)
+        if old_password == customer.password: 
+            customer.password = new_password  
             customer.save()
             return redirect("Customer:customer_profile")
         else:
@@ -560,9 +555,63 @@ def add_rental_feedback(request, booking_id):
 
     if request.method == "POST":
         feedback = request.POST["feedback"]
-        booking.feedback = feedback  # Store feedback in the model
+        booking.feedback = feedback 
         booking.save()
         messages.success(request, "Feedback submitted successfully!")
         return redirect("Customer:customer_bookings")
 
     return render(request, "Customer/add_feedback.html", {"booking": booking})
+
+#///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+def customer_dashboard(request):
+    customer_id = request.session.get("cid")  
+    if not customer_id:
+        return render(request, "Customer/error.html", {"message": "Customer ID not found in session"})
+    try:
+        customer = Customer.objects.get(id=customer_id) 
+    except Customer.DoesNotExist:
+        return render(request, "Customer/error.html", {"message": "Invalid Customer ID"})
+    
+    total_vehicles_added = Vehicle.objects.filter(owner=customer, vehicle_type="sale").count()
+    
+    sold_vehicles = TestDriveBooking.objects.filter(vehicle__owner=customer, status="Accepted").count()
+    
+    total_sales_earnings = TestDriveBooking.objects.filter(
+        vehicle__owner=customer, status="Accepted"
+    ).aggregate(Sum("Payment_amount"))["Payment_amount__sum"] or 0
+    vehicles = Vehicle.objects.filter(owner=customer, vehicle_type="sale")
+    total_value_of_added_vehicles = sum(vehicle.price * 100000 for vehicle in vehicles)
+
+    context = {
+        "total_vehicles_added": total_vehicles_added,
+        "sold_vehicles": sold_vehicles,
+        "total_sales_earnings": total_sales_earnings,
+        "total_value_of_added_vehicles": total_value_of_added_vehicles,
+    }
+
+    return render(request, "Customer/customer_dashboard.html", context)
+
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+def submit_complaint(request):
+    if request.method == "POST":
+        role = request.POST.get("role")
+        name = request.POST.get("name")
+        address = request.POST.get("address")
+        email = request.POST.get("email")
+        phone_number = request.POST.get("phone_number")
+        complaint_text = request.POST.get("complaint_text")
+        Complaint.objects.create(
+            role=role,
+            name=name,
+            address=address,
+            email=email,
+            phone_number=phone_number,
+            complaint_text=complaint_text
+        )
+        return render(request, "Customer/index.html")
+    return render(request, "Customer/submit_complaint.html")
+
+

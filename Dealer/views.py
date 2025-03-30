@@ -1,5 +1,3 @@
-
-
 # Create your views here.
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
@@ -9,6 +7,9 @@ from decimal import Decimal
 from Customer.models import Customer, RentalBooking, TestDriveBooking, Vehicle, VehicleFeatures
 from Dealer.models import Dealer
 from Showroom.models import Showroom
+from django.db.models import Sum
+
+
 
 def dealer_registration(request):
     if request.method == 'POST':
@@ -24,7 +25,7 @@ def dealer_registration(request):
             name=name,
             email=email,
             phone=phone,
-            password=password,  # Not hashed as requested
+            password=password, 
             id_proof_number=id_proof_number,
             address=address,
             profile_image_dealer=profile_image_dealer,
@@ -36,7 +37,7 @@ def dealer_registration(request):
 
     return render(request, 'Dealer/Dealer_registration.html')
 
-############dealer home#############
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def Dealer_home(request):
     return render(request,'Dealer/Dealer_home.html')
@@ -57,11 +58,9 @@ def add_vehicle(request):
         fuel_type = request.POST.get('fuel_type')
         transmission = request.POST.get('transmission')
         image = request.FILES.get('image')
-
-        # Retrieve session user ID
         dealer_id = request.session.get('did')
         showroom_id = request.session.get('sid')
-        customer_id = request.session.get('cid')  # NEW: Get Customer ID
+        customer_id = request.session.get('cid') 
 
         print(f"Session Values - Dealer ID: {dealer_id}, Showroom Dealer ID: {showroom_id}, Customer ID: {customer_id}")
 
@@ -107,13 +106,13 @@ def add_vehicle(request):
                 created_at=now(),
             )
 
-        elif customer_id:  # NEW: Allow Customers to Add Vehicles
+        elif customer_id:  
             customer = Customer.objects.filter(id=customer_id).first()
             if not customer:
                 return render(request, "Dealer/add_vehicle.html", {"message": "Customer not found!"})
 
             vehicle = Vehicle(
-                owner=customer,  # Assign to Customer
+                owner=customer,  
                 title=title,
                 brand=brand,
                 model=model,
@@ -141,12 +140,12 @@ def add_vehicle(request):
 #//////////////////////////////////////////////////////////////////////////////////////////////
 
 def dealer_vehicles(request):
-    dealer_id = request.session.get('did')  # Get logged-in dealer's ID
+    dealer_id = request.session.get('did')  
 
     if not dealer_id:
-        return redirect('Dealer:dealer_login')  # Redirect to login if not authenticated
+        return redirect('Dealer:dealer_login') 
 
-    vehicles = Vehicle.objects.filter(dealer_id=dealer_id)  # Get vehicles added by the dealer
+    vehicles = Vehicle.objects.filter(dealer_id=dealer_id)  
 
     return render(request, "Dealer/dealer_vehicles.html", {"vehicles": vehicles})
 
@@ -159,7 +158,7 @@ def add_vehicle_features(request, vehicle_id):
         previous_owners = request.POST.get('previous_owners', 1)
         condition = request.POST.get('condition', "Used")
         color = request.POST.get('color', "Unknown")
-        seating_capacity = request.POST.get('seating_capacity', 4)  # Default: 4 seats
+        seating_capacity = request.POST.get('seating_capacity', 4) 
         engine_capacity = request.POST.get('engine_capacity', "")
         fuel_tank_capacity = request.POST.get('fuel_tank_capacity', None)
         features = request.POST.get('features', "")
@@ -170,10 +169,9 @@ def add_vehicle_features(request, vehicle_id):
         insurance_valid_till = request.POST.get('insurance_valid_till') if request.POST.get('insurance_valid_till') else None
         warranty_available = request.POST.get('warranty_available') == "on"
 
-        # ✅ Ensure VehicleFeatures is either retrieved or created with default values
         vehicle_features, created = VehicleFeatures.objects.get_or_create(
             vehicle=vehicle,
-            defaults={  # These values will only be used **if a new record is created**
+            defaults={ 
                 "previous_owners": int(previous_owners),
                 "condition": condition,
                 "color": color,
@@ -190,7 +188,6 @@ def add_vehicle_features(request, vehicle_id):
             }
         )
 
-        # ✅ If record already exists, update the values
         if not created:
             vehicle_features.previous_owners = int(previous_owners)
             vehicle_features.condition = condition
@@ -205,22 +202,19 @@ def add_vehicle_features(request, vehicle_id):
             vehicle_features.negotiable = negotiable
             vehicle_features.insurance_valid_till = insurance_valid_till
             vehicle_features.warranty_available = warranty_available
-            vehicle_features.save()  # ✅ Save updated values
+            vehicle_features.save() 
 
-        return redirect('Dealer:dealer_vehicles')  # Redirect after saving
+        return redirect('Dealer:dealer_vehicles') 
 
     return render(request, "Dealer/add_vehicle_features.html", {"vehicle": vehicle})
 
 #///////////////////////////////////////////////////////////////////////////////////////////
 
 def dealer_bookings(request):
-    """Show all test drive & rental bookings for the dealer."""
     if "did" not in request.session:
-        return redirect("Dealer:login")  # Redirect if not logged in
-
+        return redirect("Dealer:login")  
     dealer_id = request.session["did"]
 
-    # Fetch bookings for dealer's vehicles
     test_drives = TestDriveBooking.objects.filter(vehicle__dealer_id=dealer_id).order_by("-date", "-time")
     rentals = RentalBooking.objects.filter(vehicle__dealer_id=dealer_id).order_by("-rental_date")
 
@@ -230,9 +224,10 @@ def dealer_bookings(request):
         {"test_drives": test_drives, "rentals": rentals},
     )
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def approve_dealer_booking(request, booking_type, booking_id):
-    """Approve a test drive or rental booking."""
     if booking_type == "test_drive":
         booking = get_object_or_404(TestDriveBooking, id=booking_id)
     elif booking_type == "rental":
@@ -245,9 +240,10 @@ def approve_dealer_booking(request, booking_type, booking_id):
     messages.success(request, "Booking approved successfully!")
     return redirect("Dealer:dealer_bookings")
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def reject_dealer_booking(request, booking_type, booking_id):
-    """Reject a test drive or rental booking."""
     if booking_type == "test_drive":
         booking = get_object_or_404(TestDriveBooking, id=booking_id)
     elif booking_type == "rental":
@@ -263,24 +259,26 @@ def reject_dealer_booking(request, booking_type, booking_id):
 #///////////////////////////////////////////////////////////////////////////////////////////
 
 def dealer_vehicle_list(request):
-    """List all vehicles available for selling (not for renting)."""
     if "did" not in request.session:
-        return redirect("Dealer:login")  # Redirect if not logged in
-
-    vehicles = Vehicle.objects.filter(vehicle_type=Vehicle.SALE)  # Fetch only selling vehicles
+        return redirect("Dealer:login")  
+    vehicles = Vehicle.objects.filter(vehicle_type=Vehicle.SALE) 
     return render(request, "Dealer/dealer_vehicle_list.html", {"vehicles": vehicles})
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 def dealer_vehicle_detail(request, vehicle_id):
-    """Show details of a selected vehicle."""
     if "did" not in request.session:
-        return redirect("Dealer:login")  # Redirect if not logged in
+        return redirect("Dealer:login") 
 
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     return render(request, "Dealer/dealer_vehicle_detail.html", {"vehicle": vehicle})
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def book_test_drive_for_dealer(request, vehicle_id):
-    if "did" not in request.session:  # Ensure dealer is logged in
+    if "did" not in request.session:  
         messages.error(request, "You must be logged in to book a test drive.")
         return redirect("Customer:Login")  
 
@@ -294,12 +292,10 @@ def book_test_drive_for_dealer(request, vehicle_id):
             messages.error(request, "Please select both date and time.")
             return redirect("Dealer:dealer_vehicle_detail", vehicle_id=vehicle.id)
 
-        # ✅ Fetch the Dealer instance using the dealer ID from session
         dealer = get_object_or_404(Dealer, id=request.session["did"])
 
-        # Create the booking
         TestDriveBooking.objects.create(
-            dealer=dealer,  # ✅ Assign the Dealer instance, not just an ID
+            dealer=dealer,  
             vehicle=vehicle,
             date=test_drive_date,
             time=test_drive_time,
@@ -308,25 +304,25 @@ def book_test_drive_for_dealer(request, vehicle_id):
         )
 
         messages.success(request, "Test drive booked successfully!")
-        return redirect("Dealer:dealer_vehicle_list")  # Redirect to vehicle list
+        return redirect("Dealer:dealer_vehicle_list")  
 
-    # If it's a GET request, render the booking form
     return render(request, "Dealer/book_test_drive.html", {"vehicle": vehicle})
     
 #///////////////////////////////////////////////////////////////////////////////////////////
 
 def Dealer_booked_vehicel(request):
     if "did" not in request.session:
-        return redirect("Customer:Login")  # Redirect if not logged in
+        return redirect("Customer:Login") 
     
-    dealer_id = request.session["did"]  # Get logged-in dealer ID
+    dealer_id = request.session["did"] 
     test_drive_bookings = TestDriveBooking.objects.filter(dealer_id=dealer_id).select_related("vehicle")
 
     return render(request, "Dealer/Dealer_booked_vehicel.html", {"test_drive_bookings": test_drive_bookings})
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def mark_interested_dealer(request, booking_id):
-    """Update booking interest status to 'Interested' for Dealer."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
 
     if request.session.get("did") != booking.dealer.id:
@@ -338,9 +334,10 @@ def mark_interested_dealer(request, booking_id):
     messages.success(request, "Marked as Interested!")
     return redirect("Dealer:Dealer_booked_vehicel")
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def mark_not_interested_dealer(request, booking_id):
-    """Update booking interest status to 'Not Interested' for Dealer."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
 
     if request.session.get("did") != booking.dealer.id:
@@ -352,21 +349,19 @@ def mark_not_interested_dealer(request, booking_id):
     messages.error(request, "Marked as Not Interested.")
     return redirect("Dealer:Dealer_booked_vehicel")
 
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 def make_payment_dealer(request, booking_id):
-    """Handle advance payment for Dealer's test drive booking."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
 
-    # Convert price from lakhs to full rupees
-    vehicle_price = booking.vehicle.price * Decimal(100000)  # Convert 11.25 → 1125000
+    vehicle_price = booking.vehicle.price * Decimal(100000)  
 
-    # Calculate 10% advance
-    advance_amount = vehicle_price * Decimal(0.1)  # 10% of price
+    advance_amount = vehicle_price * Decimal(0.1) 
 
     if request.method == "POST":
-        # Assume payment is processed successfully
         booking.payment_status = "Paid"
-        booking.Payment_amount = advance_amount  # Store actual advance paid
+        booking.Payment_amount = advance_amount  
         booking.save()
         messages.success(request, f"Payment of ₹{advance_amount} successful!")
         return redirect("Dealer:Dealer_booked_vehicel")
@@ -376,20 +371,22 @@ def make_payment_dealer(request, booking_id):
         "Dealer/make_payment.html",
         {
             "booking": booking,
-            "vehicle_price_lakh": booking.vehicle.price,  # Display in Lakhs
-            "advance_amount": advance_amount,  # Correct in Rupees
+            "vehicle_price_lakh": booking.vehicle.price,  
+            "advance_amount": advance_amount, 
         },
     )
-    
+   
+
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
 def mark_as_contacted(request, booking_id):
-    """Update booking status to 'Contacted'."""
     booking = get_object_or_404(TestDriveBooking, id=booking_id)
     
     booking.Contancted = "Contacted"
     booking.save()
     
     messages.success(request, "Marked as Contacted!")
-    return redirect("Dealer:dealer_bookings")  # Adjust this URL name as needed
+    return redirect("Dealer:dealer_bookings") 
 
 #///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -420,15 +417,15 @@ def edit_dealer_vehicle(request, vehicle_id):
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 def dealer_profile(request):
-    dealer_id = request.session.get('did')  # Get logged-in dealer's ID
+    dealer_id = request.session.get('did')  
 
     if not dealer_id:
-        return redirect('Dealer:dealer_login')  # Redirect if not logged in
-
+        return redirect('Dealer:dealer_login') 
     dealer = get_object_or_404(Dealer, id=dealer_id)
     return render(request, "Dealer/dealer_profile.html", {"dealer": dealer})
 
-# Edit Dealer Details
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 def edit_dealer_details(request):
     dealer_id = request.session.get('did')
 
@@ -451,7 +448,8 @@ def edit_dealer_details(request):
 
     return render(request, "Dealer/edit_dealer_details.html", {"dealer": dealer})
 
-# Change Dealer Password
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 def change_dealer_password(request):
     dealer_id = request.session.get('did')
 
@@ -473,9 +471,62 @@ def change_dealer_password(request):
             messages.error(request, "New passwords do not match!")
             return redirect("Dealer:change_dealer_password")
 
-        dealer.password = new_password  # Directly storing plain password
+        dealer.password = new_password  
         dealer.save()
         messages.success(request, "Password changed successfully!")
         return redirect("Dealer:dealer_profile")
 
     return render(request, "Dealer/change_dealer_password.html")
+
+#////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+def dealer_dashboard(request):
+    dealer_id = request.session.get("did")  
+
+    if not dealer_id:
+        return render(request, "Dealer/error.html", {"message": "Dealer ID not found in session"})
+
+    try:
+        dealer = Dealer.objects.get(id=dealer_id)  
+    except Dealer.DoesNotExist:
+        return render(request, "Dealer/error.html", {"message": "Invalid Dealer ID"})
+
+    total_vehicles_added = Vehicle.objects.filter(dealer=dealer).count()
+
+    total_vehicles_for_sale = Vehicle.objects.filter(dealer=dealer, vehicle_type="sale").count()
+    total_vehicles_for_rent = Vehicle.objects.filter(dealer=dealer, vehicle_type="rent").count()
+
+    total_test_drive_bookings = TestDriveBooking.objects.filter(vehicle__dealer=dealer).count()
+    sold_vehicles = TestDriveBooking.objects.filter(vehicle__dealer=dealer, status="Accepted").count()
+    total_sales_earnings = TestDriveBooking.objects.filter(
+        vehicle__dealer=dealer, payment_status="Paid"
+    ).aggregate(Sum("Payment_amount"))["Payment_amount__sum"] or 0
+
+    total_rental_bookings = RentalBooking.objects.filter(vehicle__dealer=dealer).count()
+    total_rented_vehicles = RentalBooking.objects.filter(vehicle__dealer=dealer, status="Accepted").count()
+    total_rental_earnings = RentalBooking.objects.filter(
+        vehicle__dealer=dealer, payment_status="Paid"
+    ).aggregate(Sum("vehicle__price"))["vehicle__price__sum"] or 0
+
+    vehicles = Vehicle.objects.filter(dealer=dealer)
+    total_value_of_added_vehicles = sum(
+        (vehicle.price * 100000) if vehicle.vehicle_type == "sale" else vehicle.price
+        for vehicle in vehicles
+    )
+    total_profit = total_sales_earnings + total_rental_earnings  
+
+    context = {
+        "total_vehicles_added": total_vehicles_added,
+        "total_vehicles_for_sale": total_vehicles_for_sale,
+        "total_vehicles_for_rent": total_vehicles_for_rent,
+        "total_test_drive_bookings": total_test_drive_bookings,
+        "sold_vehicles": sold_vehicles,
+        "total_sales_earnings": total_sales_earnings,
+        "total_rental_bookings": total_rental_bookings,
+        "total_rented_vehicles": total_rented_vehicles,
+        "total_rental_earnings": total_rental_earnings,
+        "total_value_of_added_vehicles": total_value_of_added_vehicles,
+        "total_profit": total_profit,
+    }
+
+    return render(request, "Dealer/dealer_dashboard.html", context)

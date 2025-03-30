@@ -91,3 +91,24 @@ class RentalBooking(models.Model):
     status = models.CharField(max_length=20, choices=[("Pending", "Pending"), ("Accepted", "Accepted"), ("Rejected", "Rejected")], default="Pending")
     payment_status = models.CharField(max_length=20, choices=[("Pending", "Pending"), ("Paid", "Paid")], default="Pending")
     feedback = models.TextField(blank=True, null=True) 
+    
+class Complaint(models.Model):
+    ROLE_CHOICES = [
+        ("Showroom", "Showroom"),
+        ("Customer", "Customer"),
+        ("Dealer", "Dealer"),
+    ]
+
+    STATUS_CHOICES = [
+        ("Pending", "Pending"),
+        ("Resolved", "Resolved"),
+    ]
+
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)  # Role of the complainant
+    name = models.CharField(max_length=100)  # Name of the complainant
+    address = models.TextField()  # Address of the complainant
+    email = models.EmailField()  # Email address
+    phone_number = models.CharField(max_length=15)  # Contact number
+    complaint_text = models.TextField()  # Complaint details
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Pending")  # Complaint status
+    submitted_at = models.DateTimeField(auto_now_add=True)  # Auto timestamp

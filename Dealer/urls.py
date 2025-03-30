@@ -29,6 +29,7 @@ urlpatterns=[
       path("dealer_profile/", views.dealer_profile, name="dealer_profile"),
       path("edit_dealer_details/", views.edit_dealer_details, name="edit_dealer_details"),
       path("change_dealer_password/", views.change_dealer_password, name="change_dealer_password"),
+      path("dashboard/", views.dealer_dashboard, name="dealer_dashboard"),
 
 
 

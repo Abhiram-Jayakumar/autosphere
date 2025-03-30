@@ -36,6 +36,8 @@ urlpatterns=[
     path("profile/edit/", views.edit_customer_profile, name="edit_customer_profile"),
     path("profile/change-password/", views.change_customer_password, name="change_customer_password"),
     path("add_rental_feedback/<int:booking_id>/", views.add_rental_feedback, name="add_rental_feedback"),
+    path("dashboard/", views.customer_dashboard, name="customer_dashboard"),
+    path("submit/", views.submit_complaint, name="submit_complaint"),
 
 
 
