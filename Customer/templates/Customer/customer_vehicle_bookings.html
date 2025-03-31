@@ -1,103 +1,750 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Vehicle Test Drive Bookings</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-4">
-        <h2 class="text-center">Test Drive Bookings for Your Vehicles</h2>
+    <title>AutoSphere | Test Drive Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+            --warning: #F6AD55;
+        }
 
-        <!-- Success & Error Messages -->
-        {% if messages %}
-        <div class="alert alert-dismissible fade show">
-            {% for message in messages %}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        .bookings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--gray);
+        }
+
+        .alert {
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        .alert-success {
+            background: #DEF7EC;
+            color: #03543F;
+        }
+
+        .alert-danger {
+            background: #FDE2E2;
+            color: #9B1C1C;
+        }
+
+        .bookings-table {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .bookings-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bookings-table th {
+            background: var(--secondary);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .bookings-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            vertical-align: middle;
+        }
+
+        .bookings-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .customer-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .vehicle-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .vehicle-model {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .vehicle-brand {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-success {
+            background: #DEF7EC;
+            color: #03543F;
+        }
+
+        .badge-danger {
+            background: #FDE2E2;
+            color: #9B1C1C;
+        }
+
+        .badge-warning {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .badge-primary {
+            background: #E1EFFE;
+            color: #1E429F;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-info {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        @media (max-width: 1024px) {
+            .bookings-table {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-col {
+            padding-right: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .brand-col {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-group,
+            .nav-user-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            height: 70px;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3517;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Your existing navbar --> <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'Customer:Customer_home' %}" class="logo">Auto<span>Sphere</span></a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'Customer:add_vehicle' %}" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Add Vehicle
+                </a>
+                <a href="{% url 'Customer:customer_vehicles' %}" class="nav-link">
+                    <i class="fas fa-car"></i> My Vehicles
+                </a>
+                <a href="{% url 'Customer:view_vehicles' %}" class="nav-link">
+                    <i class="fas fa-search"></i> Browse Vehicles
+                </a>
+                <a href="{% url 'Customer:customer_bookings' %}" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a href="{% url 'Customer:customer_vehicle_bookings' %}" class="nav-link">
+                    <i class="fas fa-bookmark"></i> Vehicle Bookings
+                </a>
+                <a href="{% url 'Customer:customer_profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{% url 'Customer:customer_dashboard' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'Customer:index' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="bookings-container">
+            <div class="page-header">
+                <h2>Test Drive Management</h2>
+                <p>Manage test drive bookings for your vehicles</p>
+            </div>
+
+            {% if messages %}
+            <div class="alerts">
+                {% for message in messages %}
                 <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
+                    <i
+                        class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
                     {{ message }}
                 </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        <table class="table table-bordered mt-3">
-            <thead class="table-dark">
-                <tr>
-                    <th>Booked By</th>
-                    <th>Vehicle</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                    <th>Interest</th>
-                    <th>Payment Status</th>
-                    <th>Amount Paid</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in test_drives %}
-                <tr>
-                    <!-- Show Customer Name if booked by Customer, else show Dealer Name -->
-                    <td>
-                        {% if booking.customer %}
-                            {{ booking.customer.name }} (Customer)
-                        {% elif booking.dealer %}
-                            {{ booking.dealer.name }} (Dealer)
-                        {% else %}
-                            N/A
-                        {% endif %}
-                    </td>
-
-                    <td>{{ booking.vehicle.brand }} - {{ booking.vehicle.model }}</td>
-                    <td>{{ booking.date }}</td>
-                    <td>{{ booking.time }}</td>
-                    <td><strong>{{ booking.status }}</strong></td>
-
-                    <td>
-                        {% if booking.status == "Pending" %}
-                            <a href="{% url 'Customer:approve_customer_booking' booking.id %}" class="btn btn-success btn-sm">Approve</a>
-                            <a href="{% url 'Customer:reject_customer_booking' booking.id %}" class="btn btn-danger btn-sm">Reject</a>
-                        
-                        {% elif booking.status == "Accepted" %}
-                            {% if booking.Contancted == "Pending" %}
-                                <a href="{% url 'Customer:mark_contacted' booking.id %}" class="btn btn-info btn-sm">Mark as Contacted</a>
-                            {% else %}
-                                <span class="badge bg-primary">Contacted</span>
-                            {% endif %}
-                        
-                        {% else %}
-                            <span class="badge bg-secondary">{{ booking.status }}</span>
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        {% if booking.Intrested == "Intrested" %}
-                            <span class="badge bg-success">Interested</span>
-                        {% elif booking.Intrested == "Not-Intrested" %}
-                            <span class="badge bg-danger">Not Interested</span>
-                        {% else %}
-                            <span class="badge bg-warning">Pending</span>
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        {% if booking.payment_status == "Paid" %}
-                            <span class="badge bg-success">Paid</span>
-                        {% else %}
-                            <span class="badge bg-warning">Pending</span>
-                        {% endif %}
-                    </td>
-
-                    <td>₹{{ booking.Payment_amount }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="9" class="text-center">No test drive bookings found for your vehicles.</td>
-                </tr>
                 {% endfor %}
-            </tbody>
-        </table>
+            </div>
+            {% endif %}
+
+            <div class="bookings-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Vehicel-image</th>
+                            <th>Schedule</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                            <th>Interest</th>
+                            <th>Payment</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in test_drives %}
+                        <tr>
+                            <td>
+                                <div class="customer-info">
+                                    <div class="customer-avatar">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        {% if booking.customer %}
+                                        {{ booking.customer.name }}
+                                        <div class="text-muted">Customer</div>
+                                        {% elif booking.dealer %}
+                                        {{ booking.dealer.name }}
+                                        <div class="text-muted">Dealer</div>
+                                        {% else %}
+                                        N/A
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="vehicle-info">
+                                    <span class="vehicle-model">{{ booking.vehicle.model }}</span>
+
+                                    <span class="vehicle-brand">{{ booking.vehicle.brand }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <img src="{{ booking.vehicle.image.url }}" alt="Vehicle Image"
+                                    style="width: 50px; height: 50px; border-radius: 5px;">
+                            </td>
+                            </td>
+                            <td>
+                                <div class="schedule-info">
+                                    <div><i class="far fa-calendar"></i> {{ booking.date }}</div>
+                                    <div><i class="far fa-clock"></i> {{ booking.time }}</div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge {% if booking.status == 'Pending' %}badge-warning
+                                    {% elif booking.status == 'Accepted' %}badge-success
+                                    {% else %}badge-danger{% endif %}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="action-buttons">
+                                    {% if booking.status == "Pending" %}
+                                    <a href="{% url 'Customer:approve_customer_booking' booking.id %}"
+                                        class="btn btn-success">
+                                        <i class="fas fa-check"></i> Approve
+                                    </a>
+                                    <a href="{% url 'Customer:reject_customer_booking' booking.id %}"
+                                        class="btn btn-danger">
+                                        <i class="fas fa-times"></i> Reject
+                                    </a>
+                                    {% elif booking.status == "Accepted" %}
+                                    {% if booking.Contancted == "Pending" %}
+                                    <a href="{% url 'Customer:mark_contacted' booking.id %}" class="btn btn-info">
+                                        <i class="fas fa-phone"></i> Mark Contacted
+                                    </a>
+                                    {% else %}
+                                    <span class="badge badge-primary">
+                                        <i class="fas fa-check"></i> Contacted
+                                    </span>
+                                    {% endif %}
+                                    {% else %}
+                                    <span class="badge badge-secondary">{{ booking.status }}</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+
+                            <td>
+                                <span class="badge 
+                                    {% if booking.Intrested == 'Intrested' %}badge-success
+                                    {% elif booking.Intrested == 'Not-Intrested' %}badge-danger
+                                    {% else %}badge-warning{% endif %}">
+                                    {% if booking.Intrested == 'Intrested' %}
+                                    <i class="fas fa-thumbs-up"></i> Interested
+                                    {% elif booking.Intrested == 'Not-Intrested' %}
+                                    <i class="fas fa-thumbs-down"></i> Not Interested
+                                    {% else %}
+                                    <i class="fas fa-clock"></i> Pending
+                                    {% endif %}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span
+                                    class="badge {% if booking.payment_status == 'Paid' %}badge-success{% else %}badge-warning{% endif %}">
+                                    {% if booking.payment_status == 'Paid' %}
+                                    <i class="fas fa-check-circle"></i> Paid
+                                    {% else %}
+                                    <i class="fas fa-clock"></i> Pending
+                                    {% endif %}
+                                </span>
+                            </td>
+
+                            <td>
+                                <strong>₹{{ booking.Payment_amount }}</strong>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="empty-state">
+                                <i class="fas fa-car fa-3x mb-3"></i>
+                                <p>No test drive bookings found for your vehicles.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-column brand-col">
+                    <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                    <p class="footer-description">Your trusted platform for vehicle transactions and management.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Buy Vehicles</a></li>
+                        <li><a href="#">Sell Vehicles</a></li>
+                        <li><a href="#">Vehicle Rental</a></li>
+                        <li><a href="#">Vehicle Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> support@autosphere.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, NY 10001</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Your existing footer -->
 </body>
+
 </html>

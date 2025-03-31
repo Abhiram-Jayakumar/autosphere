@@ -1,13 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AutoSphere - Registration</title>
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--dark);
+        }
+
+        .page-title h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+            font-size: 18px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .registration-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 250px;
+        }
+
+        .registration-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .card-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .card-link {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 12px 24px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .card-link:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-logo a {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .brand-logo span {
+            color: var(--accent);
+        }
+    </style>
 </head>
+
 <body>
-    <a href="{% url 'Customer:customer_reg' %}">Customer Registration</a> <br>
-    <a href="{% url 'Dealer:Dealer_reg' %}">Dealer Registration</a> <br>
-<a href="{% url 'Showroom:Showroom_reg'%}">Showroom Registration</a>
+    <div class="container">
+        <div class="page-title">
+            <div class="brand-logo">
+                <a href="{% url 'Customer:index'%}" style="color:black;">Join &nbsp;<span style="color: #3563E9;">Auto</span><span>Sphere</span></a>
+            </div>
+            <p>Choose your registration type to get started</p>
+        </div>
+
+        <div class="cards-grid">
+            <!-- Home Card -->
+            <div class="registration-card">
+                <div class="card-icon">🏠</div>
+                <h2 class="card-title">Home</h2>
+                <p class="card-description">Return to the main page</p>
+                <a href="/" class="card-link">Go Home</a>
+            </div>
+
+            <!-- Customer Registration Card -->
+            <div class="registration-card">
+                <div class="card-icon">👤</div>
+                <h2 class="card-title">Customer</h2>
+                <p class="card-description">Register as a customer to buy or rent vehicles</p>
+                <a href="{% url 'Customer:customer_reg' %}" class="card-link">Register</a>
+            </div>
+
+            <!-- Dealer Registration Card -->
+            <div class="registration-card">
+                <div class="card-icon">🚗</div>
+                <h2 class="card-title">Dealer</h2>
+                <p class="card-description">Register as a dealer to sell vehicles</p>
+                <a href="{% url 'Dealer:Dealer_reg' %}" class="card-link">Register</a>
+            </div>
+
+            <!-- Showroom Registration Card -->
+            <div class="registration-card">
+                <div class="card-icon">🏪</div>
+                <h2 class="card-title">Showroom</h2>
+                <p class="card-description">Register your showroom to showcase vehicles</p>
+                <a href="{% url 'Showroom:Showroom_reg' %}" class="card-link">Register</a>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>

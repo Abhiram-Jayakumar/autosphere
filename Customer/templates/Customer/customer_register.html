@@ -1,35 +1,430 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Customer Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSphere | Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        /* Registration Form Styles */
+        .registration-container {
+            max-width: 600px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .registration-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: var(--light);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-label:hover {
+            background: var(--light-gray);
+        }
+
+        .file-upload-label i {
+            color: var(--primary);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(53, 99, 233, 0.2);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .registration-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Customer Registration</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label>Name:</label>
-        <input type="text" name="name" required><br>
-        
-        <label>Email:</label>
-        <input type="email" name="email" required><br>
-        
-        <label>Phone:</label>
-        <input type="text" name="phone" required><br>
-        
-        <label>Password:</label>
-        <input type="text" name="password" required><br>
-        
-        <label>ID Proof Number:</label>
-        <input type="text" name="id_proof_number" required><br>
-        
-        <label>Address:</label>
-        <textarea name="address" required></textarea><br>
-        
-        <label>Profile Image:</label>
-        <input type="file" name="profile_image"><br>
-        
-        <button type="submit">Register</button>
-        
-    </form>
+    <!-- Header Section -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="#" class="logo"><span style="color: #3563E9;">Auto</span><span>Sphere</span></a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Buy</a></li>
+                    <li><a href="#">Sell</a></li>
+                    <li><a href="#">Rent</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="{% url 'Customer:submit_complaint'%}">Complaint</a></li>
+                </ul>
+                <div>
+                    <a href="{% url 'Customer:Login'%}" class="btn btn-outline">Sign In</a>
+                    <a href="{% url 'Customer:registration'%}" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="registration-container">
+        <div class="registration-card">
+            <div class="page-title">
+                <h2>Create Account</h2>
+                <p>Join AutoSphere and start your journey</p>
+            </div>
+
+            <form id="registrationForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                    <div class="error-message" id="nameError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <input type="email" name="email" class="form-control" required>
+                    <div class="error-message" id="emailError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" name="phone" class="form-control" required>
+                    <div class="error-message" id="phoneError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                    <div class="error-message" id="passwordError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ID Proof Number</label>
+                    <input type="text" name="id_proof_number" class="form-control" required>
+                    <div class="error-message" id="idProofError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <textarea name="address" class="form-control" required></textarea>
+                    <div class="error-message" id="addressError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Profile Image</label>
+                    <div class="file-upload">
+                        <label class="file-upload-label">
+                            <i class="fas fa-camera"></i>
+                            <span>Choose profile picture</span>
+                            <input type="file" name="profile_image" accept="image/*">
+                        </label>
+                    </div>
+                    <div class="error-message" id="imageError"></div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Form validation
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.classList.remove('error');
+            });
+
+            let isValid = true;
+
+            // Validate Name (at least 2 words)
+            const name = document.querySelector('[name="name"]').value.trim();
+            if (name.split(' ').filter(word => word.length > 0).length < 2) {
+                showError('name', 'Please enter your full name');
+                isValid = false;
+            }
+
+            // Validate Email
+            const email = document.querySelector('[name="email"]').value.trim();
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Validate Phone (10 digits)
+            const phone = document.querySelector('[name="phone"]').value.trim();
+            if (!/^\d{10}$/.test(phone)) {
+                showError('phone', 'Please enter a valid 10-digit phone number');
+                isValid = false;
+            }
+
+            // Validate Password
+            const password = document.querySelector('[name="password"]').value;
+            if (password.length < 8) {
+                showError('password', 'Password must be at least 8 characters long');
+                isValid = false;
+            }
+
+            // Validate ID Proof
+            const idProof = document.querySelector('[name="id_proof_number"]').value.trim();
+            if (idProof.length < 8) {
+                showError('idProof', 'Please enter a valid ID proof number');
+                isValid = false;
+            }
+
+            // Validate Address
+            const address = document.querySelector('[name="address"]').value.trim();
+            if (address.length < 10) {
+                showError('address', 'Please enter a complete address');
+                isValid = false;
+            }
+
+            // Validate Image (if selected)
+            const imageInput = document.querySelector('[name="profile_image"]');
+            if (imageInput.files.length > 0) {
+                const file = imageInput.files[0];
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+
+                if (!validTypes.includes(file.type)) {
+                    showError('image', 'Please upload a valid image file (JPEG, PNG)');
+                    isValid = false;
+                }
+
+                if (file.size > maxSize) {
+                    showError('image', 'Image size should be less than 5MB');
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                this.submit();
+            }
+        });
+
+        function showError(fieldName, message) {
+            const errorElement = document.getElementById(fieldName + 'Error');
+            const inputElement = document.querySelector(`[name="${fieldName}"]`);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            inputElement.classList.add('error');
+        }
+
+        // Update file input label
+        document.querySelector('[name="profile_image"]').addEventListener('change', function(e) {
+            const fileName = e.target.files[0]?.name || 'Choose profile picture';
+            this.parentElement.querySelector('span').textContent = fileName;
+        });
+    </script>
 </body>
 </html>

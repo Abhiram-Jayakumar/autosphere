@@ -3,55 +3,699 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicel Features</title>
+    <title>AutoSphere | Vehicle Features</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 80px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #2954d4;
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            background-color: var(--success);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+                /* Navbar Styles */
+                .navbar {
+            background: white;
+            height: 70px;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3517;
+        }        /* Footer Styles */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-col {
+            padding-right: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .brand-col {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-group,
+            .nav-user-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        <label>Previous Owners:</label>
-        <input type="number" name="previous_owners" required><br>
-    
-        <label>Condition:</label>
-        <select name="condition">
-            <option value="New">New</option>
-            <option value="Used">Used</option>
-        </select><br>
-    
-        <label>Color:</label>
-        <input type="text" name="color" required><br>
-    
-        <label>Seating Capacity:</label>
-        <input type="number" name="seating_capacity" required><br>
-    
-        <label>Engine Capacity (cc):</label>
-        <input type="text" name="engine_capacity"><br>
-    
-        <label>Fuel Tank Capacity (liters):</label>
-        <input type="number" name="fuel_tank_capacity"><br>
-    
-        <label>Additional Features (comma-separated):</label>
-        <input type="text" name="features"><br>
-    
-        <label>Safety Rating (1-5):</label>
-        <input type="number" name="safety_rating" step="0.1"><br>
-    
-        <label>GPS Enabled:</label>
-        <input type="checkbox" name="gps_enabled"><br>
-    
-        <label>Bluetooth Connectivity:</label>
-        <input type="checkbox" name="bluetooth_connectivity"><br>
-    
-        <label>Negotiable Price:</label>
-        <input type="checkbox" name="negotiable"><br>
-    
-        <label>Insurance Valid Till:</label>
-        <input type="date" name="insurance_valid_till"><br>
-    
-        <label>Warranty Available:</label>
-        <input type="checkbox" name="warranty_available"><br>
-    
-        <button type="submit">Save Features</button>
-    </form>
-    
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="{% url 'Customer:Customer_home' %}" class="logo">Auto<span>Sphere</span></a>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="{% url 'Customer:add_vehicle' %}" class="nav-link">
+                        <i class="fas fa-plus-circle"></i> Add Vehicle
+                    </a>
+                    <a href="{% url 'Customer:customer_vehicles' %}" class="nav-link">
+                        <i class="fas fa-car"></i> My Vehicles
+                    </a>
+                    <a href="{% url 'Customer:view_vehicles' %}" class="nav-link">
+                        <i class="fas fa-search"></i> Browse Vehicles
+                    </a>
+                    <a href="{% url 'Customer:customer_bookings' %}" class="nav-link">
+                        <i class="fas fa-calendar-check"></i> My Bookings
+                    </a>
+                    <a href="{% url 'Customer:customer_vehicle_bookings' %}" class="nav-link">
+                        <i class="fas fa-bookmark"></i> Vehicle Bookings
+                    </a>
+                    <a href="{% url 'Customer:customer_profile' %}" class="nav-link">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                    <a href="{% url 'Customer:customer_dashboard' %}" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'Customer:index' %}" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </nav>
+    <div class="container">
+        <div class="page-title">
+            <h1>Vehicle Features</h1>
+            <p>Add detailed features for your vehicle</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            Features saved successfully!
+        </div>
+
+        <form method="post" id="featuresForm">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">Previous Owners</label>
+                    <input type="number" name="previous_owners" class="form-control" min="0" required>
+                    <div class="error-message" id="previousOwnersError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Condition</label>
+                    <select name="condition" class="form-control" required>
+                        <option value="">Select condition</option>
+                        <option value="New">New</option>
+                        <option value="Used">Used</option>
+                    </select>
+                    <div class="error-message" id="conditionError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Color</label>
+                    <input type="text" name="color" class="form-control" required>
+                    <div class="error-message" id="colorError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Seating Capacity</label>
+                    <input type="number" name="seating_capacity" class="form-control" min="1" max="50" required>
+                    <div class="error-message" id="seatingError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Engine Capacity (cc)</label>
+                    <input type="text" name="engine_capacity" class="form-control">
+                    <div class="error-message" id="engineError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Fuel Tank Capacity (liters)</label>
+                    <input type="number" name="fuel_tank_capacity" class="form-control" min="0">
+                    <div class="error-message" id="fuelTankError"></div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">Additional Features (comma-separated)</label>
+                    <input type="text" name="features" class="form-control" placeholder="e.g., Sunroof, Leather seats, Climate control">
+                    <div class="error-message" id="featuresError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Safety Rating (1-5)</label>
+                    <input type="number" name="safety_rating" class="form-control" step="0.1" min="1" max="5">
+                    <div class="error-message" id="safetyError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Insurance Valid Till</label>
+                    <input type="date" name="insurance_valid_till" class="form-control">
+                    <div class="error-message" id="insuranceError"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Additional Options</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="gps_enabled" id="gps">
+                        <label for="gps">GPS Enabled</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="bluetooth_connectivity" id="bluetooth">
+                        <label for="bluetooth">Bluetooth Connectivity</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="negotiable" id="negotiable">
+                        <label for="negotiable">Negotiable Price</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="warranty_available" id="warranty">
+                        <label for="warranty">Warranty Available</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-save"></i> Save Features
+            </button>
+        </form>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-column brand-col">
+                    <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                    <p class="footer-description">Your trusted platform for vehicle transactions and management.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Buy Vehicles</a></li>
+                        <li><a href="#">Sell Vehicles</a></li>
+                        <li><a href="#">Vehicle Rental</a></li>
+                        <li><a href="#">Vehicle Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> support@autosphere.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, NY 10001</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('featuresForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Reset all error messages
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.classList.remove('error');
+            });
+
+            // Validate Previous Owners
+            const previousOwners = this.previous_owners.value;
+            if (previousOwners < 0) {
+                showError('previousOwners', 'Number of previous owners cannot be negative');
+                isValid = false;
+            }
+
+            // Validate Condition
+            const condition = this.condition.value;
+            if (!condition) {
+                showError('condition', 'Please select a condition');
+                isValid = false;
+            }
+
+            // Validate Color
+            const color = this.color.value;
+            if (color.length < 2) {
+                showError('color', 'Please enter a valid color');
+                isValid = false;
+            }
+
+            // Validate Seating Capacity
+            const seating = this.seating_capacity.value;
+            if (seating < 1 || seating > 50) {
+                showError('seating', 'Seating capacity must be between 1 and 50');
+                isValid = false;
+            }
+
+            // Validate Engine Capacity
+            const engine = this.engine_capacity.value;
+            if (engine && !/^\d+$/.test(engine)) {
+                showError('engine', 'Please enter a valid engine capacity');
+                isValid = false;
+            }
+
+            // Validate Fuel Tank Capacity
+            const fuelTank = this.fuel_tank_capacity.value;
+            if (fuelTank && fuelTank < 0) {
+                showError('fuelTank', 'Fuel tank capacity cannot be negative');
+                isValid = false;
+            }
+
+            // Validate Safety Rating
+            const safety = this.safety_rating.value;
+            if (safety && (safety < 1 || safety > 5)) {
+                showError('safety', 'Safety rating must be between 1 and 5');
+                isValid = false;
+            }
+
+            // Validate Insurance Date
+            const insurance = this.insurance_valid_till.value;
+            if (insurance) {
+                const insuranceDate = new Date(insurance);
+                const today = new Date();
+                if (insuranceDate < today) {
+                    showError('insurance', 'Insurance date cannot be in the past');
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                const successMessage = document.getElementById('successMessage');
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                    this.submit();
+                }, 2000);
+            }
+        });
+
+        function showError(fieldName, message) {
+            const errorElement = document.getElementById(fieldName + 'Error');
+            const inputElement = document.querySelector(`[name="${fieldName.replace(/([A-Z])/g, '_$1').toLowerCase()}"]`);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            inputElement.classList.add('error');
+        }
+    </script>
 </body>
 </html>

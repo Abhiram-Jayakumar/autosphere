@@ -3,23 +3,687 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Feedback - AutoSphere</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | Add Feedback</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px 20px;
+            margin-top: 80px;
+        }
+
+        .feedback-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+        }
+
+        .feedback-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .feedback-header {
+            margin-bottom: 30px;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .rating-star {
+            font-size: 24px;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .rating-star:hover,
+        .rating-star.active {
+            color: #FFB400;
+        }
+
+        .feedback-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .feedback-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .feedback-textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            border: none;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2954d4;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4A5568;
+            transform: translateY(-2px);
+        }
+
+        .feedback-tips {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 8px;
+        }
+
+        .tips-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tips-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .tips-list li i {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .feedback-card {
+                padding: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+                /* Footer Styles */
+                .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-col {
+            padding-right: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .brand-col {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-group,
+            .nav-user-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }        /* Navbar Styles */
+        .navbar {
+            background: white;
+            height: 70px;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3517;
+        }
+    </style>
 </head>
 <body>
+    <!-- Your existing navbar -->
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'Customer:Customer_home' %}" class="logo">Auto<span>Sphere</span></a>
+           
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'Customer:add_vehicle' %}" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Add Vehicle
+                </a>
+                <a href="{% url 'Customer:customer_vehicles' %}" class="nav-link">
+                    <i class="fas fa-car"></i> My Vehicles
+                </a>
+                <a href="{% url 'Customer:view_vehicles' %}" class="nav-link">
+                    <i class="fas fa-search"></i> Browse Vehicles
+                </a>
+                <a href="{% url 'Customer:customer_bookings' %}" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a href="{% url 'Customer:customer_vehicle_bookings' %}" class="nav-link">
+                    <i class="fas fa-bookmark"></i> Vehicle Bookings
+                </a>
+                <a href="{% url 'Customer:customer_profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{% url 'Customer:customer_dashboard' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'Customer:index' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="main-content">
+        <div class="feedback-container">
+            <div class="page-title">
+                <h2>Share Your Experience</h2>
+                <p>Your feedback helps us improve our services</p>
+            </div>
 
-    <div class="container mt-4">
-        <h2 class="text-center">Add Feedback</h2>
+            <div class="feedback-card">
+                <form method="post" class="feedback-form">
+                    {% csrf_token %}
+                    
+                    <div class="feedback-header">
+                        <div class="rating-group">
+                            <span class="rating-star" data-rating="1"><i class="fas fa-star"></i></span>
+                            <span class="rating-star" data-rating="2"><i class="fas fa-star"></i></span>
+                            <span class="rating-star" data-rating="3"><i class="fas fa-star"></i></span>
+                            <span class="rating-star" data-rating="4"><i class="fas fa-star"></i></span>
+                            <span class="rating-star" data-rating="5"><i class="fas fa-star"></i></span>
+                        </div>
+                    </div>
 
-        <form method="post" class="card p-4">
-            {% csrf_token %}
-            <label for="feedback">Your Feedback:</label>
-            <textarea name="feedback" id="feedback" class="form-control" rows="4" required></textarea>
+                    <div class="form-group">
+                        <label class="form-label">Your Feedback</label>
+                        <textarea 
+                            name="feedback" 
+                            id="feedback" 
+                            class="feedback-textarea"
+                            placeholder="Tell us about your experience..."
+                            required
+                        ></textarea>
+                    </div>
 
-            <button type="submit" class="btn btn-primary mt-3">Submit Feedback</button>
-            <a href="{% url 'Customer:customer_bookings' %}" class="btn btn-secondary mt-3">Cancel</a>
-        </form>
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Feedback
+                        </button>
+                        <a href="{% url 'Customer:customer_bookings' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+
+                <div class="feedback-tips">
+                    <div class="tips-title">
+                        <i class="fas fa-lightbulb"></i>
+                        Tips for Great Feedback
+                    </div>
+                    <ul class="tips-list">
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Be specific about your experience
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Mention what you liked and what could be improved
+                        </li>
+                        <li>
+                            <i class="fas fa-check-circle"></i>
+                            Keep it respectful and constructive
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Your existing footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-column brand-col">
+                    <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                    <p class="footer-description">Your trusted platform for vehicle transactions and management.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Buy Vehicles</a></li>
+                        <li><a href="#">Sell Vehicles</a></li>
+                        <li><a href="#">Vehicle Rental</a></li>
+                        <li><a href="#">Vehicle Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> support@autosphere.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, NY 10001</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Star rating functionality
+        const stars = document.querySelectorAll('.rating-star');
+        let selectedRating = 0;
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.getAttribute('data-rating'));
+                selectedRating = rating;
+                updateStars();
+            });
+
+            star.addEventListener('mouseover', () => {
+                const rating = parseInt(star.getAttribute('data-rating'));
+                highlightStars(rating);
+            });
+
+            star.addEventListener('mouseout', () => {
+                highlightStars(selectedRating);
+            });
+        });
+
+        function updateStars() {
+            stars.forEach(star => {
+                const rating = parseInt(star.getAttribute('data-rating'));
+                star.classList.toggle('active', rating <= selectedRating);
+            });
+        }
+
+        function highlightStars(rating) {
+            stars.forEach(star => {
+                const starRating = parseInt(star.getAttribute('data-rating'));
+                star.classList.toggle('active', starRating <= rating);
+            });
+        }
+
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const feedback = document.getElementById('feedback').value.trim();
+            
+            if (feedback.length < 10) {
+                e.preventDefault();
+                alert('Please provide more detailed feedback (at least 10 characters).');
+                return;
+            }
+
+            if (selectedRating === 0) {
+                e.preventDefault();
+                alert('Please select a rating.');
+                return;
+            }
+        });
+    </script>
 </body>
 </html>

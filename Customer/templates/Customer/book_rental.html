@@ -1,30 +1,748 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rent Vehicle</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | Rent Vehicle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            margin-top: 100px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .rental-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .vehicle-preview {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            padding: 40px;
+            color: white;
+        }
+
+        .preview-content {
+            position: sticky;
+            top: 100px;
+        }
+
+        .vehicle-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-details h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-info {
+            margin-top: 30px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .rental-form {
+            padding: 40px;
+        }
+
+        .form-title {
+            margin-bottom: 30px;
+        }
+
+        .form-title h2 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .form-title p {
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .rental-summary {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .summary-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            color: var(--gray);
+        }
+
+        .total-price {
+            border-top: 2px solid var(--light-gray);
+            margin-top: 15px;
+            padding-top: 15px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .submit-btn {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: #38A169;
+            transform: translateY(-2px);
+        }
+
+        .rental-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .rental-info p {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .rental-info i {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .rental-container {
+                grid-template-columns: 1fr;
+            }
+
+            .vehicle-preview {
+                padding: 30px;
+            }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            height: 70px;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3517;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-col {
+            padding-right: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .brand-col {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-group,
+            .nav-user-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container mt-4">
-        <h2 class="text-center">Rent {{ vehicle.title }}</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label class="form-label">Rental Start Date:</label>
-                <input type="date" name="rental_date" class="form-control" required>
+    <!-- Your existing navbar -->
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'Customer:Customer_home' %}" class="logo">Auto<span>Sphere</span></a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'Customer:add_vehicle' %}" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Add Vehicle
+                </a>
+                <a href="{% url 'Customer:customer_vehicles' %}" class="nav-link">
+                    <i class="fas fa-car"></i> My Vehicles
+                </a>
+                <a href="{% url 'Customer:view_vehicles' %}" class="nav-link">
+                    <i class="fas fa-search"></i> Browse Vehicles
+                </a>
+                <a href="{% url 'Customer:customer_bookings' %}" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a href="{% url 'Customer:customer_vehicle_bookings' %}" class="nav-link">
+                    <i class="fas fa-bookmark"></i> Vehicle Bookings
+                </a>
+                <a href="{% url 'Customer:customer_profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{% url 'Customer:customer_dashboard' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'Customer:index' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Return Date:</label>
-                <input type="date" name="return_date" class="form-control" required>
+        </div>
+    </nav>
+    <div class="main-content">
+        <div class="rental-container">
+            <div class="vehicle-preview">
+                <div class="preview-content">
+                    <div class="vehicle-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>{{ vehicle.title }}</h3>
+                        <p>{{ vehicle.brand }} {{ vehicle.model }} - {{ vehicle.year }}</p>
+                    </div>
+                    <div class="vehicle-info">
+                        <div class="info-item">
+                            <i class="fas fa-gas-pump"></i>
+                            <span>{{ vehicle.fuel_type }}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-cog"></i>
+                            <span>{{ vehicle.transmission }}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-tag"></i>
+                            <span>₹{{ vehicle.price }} per day</span>
+                        </div>
+                        <p><strong>Vehicle Owner:</strong> {{ role }}</p>
+                        <p><strong>Name:</strong> {{ seller.name }}</p>
+                        <p><strong>Address:</strong> {{ seller.address }}</p>
+                        <p><strong>Email:</strong> {{ seller.email }}</p>
+                        <p><strong>Phone:</strong> {{ seller.phone }}</p>
+
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Accessories Needed (Helmet, Jacket, etc.):</label>
-                <input type="text" name="accessories_needed" class="form-control">
+
+            <div class="rental-form">
+                <div class="form-title">
+                    <h2>Rent Vehicle</h2>
+                    <p>Complete your rental booking</p>
+                </div>
+
+                <form id="rentalForm" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label">Rental Start Date</label>
+                        <input type="date" name="rental_date" class="form-control" required>
+                        <div class="error-message" id="rentalDateError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Return Date</label>
+                        <input type="date" name="return_date" class="form-control" required>
+                        <div class="error-message" id="returnDateError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Accessories Needed</label>
+                        <input type="text" name="accessories_needed" class="form-control"
+                            placeholder="E.g., Helmet, Jacket, GPS">
+                        <div class="error-message" id="accessoriesError"></div>
+                    </div>
+
+                    <div class="rental-summary">
+                        <h4 class="summary-title">Rental Summary</h4>
+                        <div class="summary-item">
+                            <span>Daily Rate</span>
+                            <span>₹{{ vehicle.price }}</span>
+                        </div>
+                        <div class="summary-item" id="durationItem">
+                            <span>Duration</span>
+                            <span>0 days</span>
+                        </div>
+                        <div class="summary-item total-price">
+                            <span>Total Amount</span>
+                            <span id="totalAmount">₹0</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-key"></i>
+                        Confirm Rental
+                    </button>
+                </form>
+
+                <div class="rental-info">
+                    <p><i class="fas fa-info-circle"></i> Minimum rental period is 1 day</p>
+                    <p><i class="fas fa-clock"></i> Pick-up and return times are 10:00 AM</p>
+                    <p><i class="fas fa-id-card"></i> Please bring your valid driving license</p>
+                </div>
             </div>
-            <button type="submit" class="btn btn-success">Book Rental</button>
-        </form>
+        </div>
     </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-column brand-col">
+                    <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                    <p class="footer-description">Your trusted platform for vehicle transactions and management.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Buy Vehicles</a></li>
+                        <li><a href="#">Sell Vehicles</a></li>
+                        <li><a href="#">Vehicle Rental</a></li>
+                        <li><a href="#">Vehicle Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> support@autosphere.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, NY 10001</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const rentalForm = document.getElementById('rentalForm');
+        const durationItem = document.getElementById('durationItem');
+        const totalAmount = document.getElementById('totalAmount');
+        const dailyRate = {{ vehicle.price }};
+
+        function updateRentalSummary() {
+            const startDate = new Date(rentalForm.rental_date.value);
+            const endDate = new Date(rentalForm.return_date.value);
+
+            if (startDate && endDate && startDate <= endDate) {
+                const duration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+                durationItem.querySelector('span:last-child').textContent = `${duration} days`;
+                totalAmount.textContent = `₹${(duration * dailyRate).toFixed(2)}`;
+            } else {
+                durationItem.querySelector('span:last-child').textContent = '0 days';
+                totalAmount.textContent = '₹0';
+            }
+        }
+
+        rentalForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.classList.remove('error');
+            });
+
+            const now = new Date('2025-03-31T03:10:42');
+            const startDate = new Date(this.rental_date.value);
+            const endDate = new Date(this.return_date.value);
+
+            // Validate rental date
+            if (startDate < now.setHours(0, 0, 0, 0)) {
+                showError('rentalDate', 'Rental date cannot be in the past');
+                isValid = false;
+            }
+
+            // Validate return date
+            if (endDate <= startDate) {
+                showError('returnDate', 'Return date must be after rental date');
+                isValid = false;
+            }
+
+            // Validate maximum rental period (e.g., 30 days)
+            const maxRentalDays = 30;
+            const rentalDuration = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+            if (rentalDuration > maxRentalDays) {
+                showError('returnDate', `Maximum rental period is ${maxRentalDays} days`);
+                isValid = false;
+            }
+
+            if (isValid) {
+                this.submit();
+            }
+        });
+
+        rentalForm.rental_date.addEventListener('change', updateRentalSummary);
+        rentalForm.return_date.addEventListener('change', updateRentalSummary);
+
+        function showError(fieldName, message) {
+            const errorElement = document.getElementById(fieldName + 'Error');
+            const inputElement = document.querySelector(`[name="${fieldName.replace(/([A-Z])/g, '_$1').toLowerCase()}"]`);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            inputElement.classList.add('error');
+        }
+    </script>
 </body>
+
 </html>

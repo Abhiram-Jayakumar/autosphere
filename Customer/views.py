@@ -83,7 +83,10 @@ def login(request):
 #//////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
 def Customer_home(request):
-    return render(request,'Customer/Customer_home.html')
+    if "cid" not in request.session:
+        return redirect("Customer:customer_login")  
+    customer = get_object_or_404(Customer, id=request.session["cid"])
+    return render(request,'Customer/Customer_home.html', {"customer": customer})
 
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -265,6 +268,20 @@ def book_test_drive(request, vehicle_id):
     customer_id = request.session["cid"]
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
 
+    # Determine the seller (Dealer, Showroom Dealer, or another Customer)
+    seller = None
+    if vehicle.dealer:  # If a dealer listed the vehicle
+        seller = vehicle.dealer
+        role = "Dealer"
+    elif vehicle.showroom_dealer:  # If a showroom dealer listed it
+        seller = vehicle.showroom_dealer
+        role = "Showroom Dealer"
+    elif vehicle.customer:  # If another customer listed it
+        seller = vehicle.customer
+        role = "Customer"
+    else:
+        role = "Unknown"
+
     if request.method == "POST":
         date = request.POST.get("date")
         time = request.POST.get("time")
@@ -279,7 +296,12 @@ def book_test_drive(request, vehicle_id):
         )
         return redirect("Customer:customer_bookings")
 
-    return render(request, "Customer/book_test_drive.html", {"vehicle": vehicle})
+    context = {
+        "vehicle": vehicle,
+        "seller": seller,
+        "role": role,
+    }
+    return render(request, "Customer/book_test_drive.html", context)
 
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -289,6 +311,17 @@ def book_rental(request, vehicle_id):
 
     customer_id = request.session["cid"]
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+
+    # Determine the seller (Only Dealer or Showroom Dealer for rentals)
+    seller = None
+    if vehicle.dealer:  # If a dealer listed the vehicle
+        seller = vehicle.dealer
+        role = "Dealer"
+    elif vehicle.showroom_dealer:  # If a showroom dealer listed it
+        seller = vehicle.showroom_dealer
+        role = "Showroom Dealer"
+    else:
+        return redirect("Customer:dashboard")  # If no valid seller, redirect
 
     if request.method == "POST":
         rental_date = request.POST.get("rental_date")
@@ -306,7 +339,12 @@ def book_rental(request, vehicle_id):
         )
         return redirect("Customer:customer_bookings")
 
-    return render(request, "Customer/book_rental.html", {"vehicle": vehicle})
+    context = {
+        "vehicle": vehicle,
+        "seller": seller,
+        "role": role,
+    }
+    return render(request, "Customer/book_rental.html", context)
 
 #///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -588,6 +626,7 @@ def customer_dashboard(request):
         "sold_vehicles": sold_vehicles,
         "total_sales_earnings": total_sales_earnings,
         "total_value_of_added_vehicles": total_value_of_added_vehicles,
+        "Customer": customer,
     }
 
     return render(request, "Customer/customer_dashboard.html", context)

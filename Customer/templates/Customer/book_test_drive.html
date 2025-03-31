@@ -1,26 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Test Drive</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | Book Test Drive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-content {
+            margin-top: 100px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .booking-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .vehicle-preview {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            padding: 30px;
+            color: white;
+            text-align: center;
+        }
+
+        .vehicle-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .vehicle-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .booking-form {
+            padding: 40px;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-title h2 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .form-title p {
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .datetime-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            background-color: #2954d4;
+            transform: translateY(-2px);
+        }
+
+        .booking-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .booking-info i {
+            color: var(--primary);
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .booking-container {
+                margin: 20px;
+            }
+
+            .datetime-group {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            height: 70px;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3517;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-col {
+            padding-right: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .brand-col {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-group,
+            .nav-user-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+        .vehicle-owner-info {
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        .vehicle-owner-info p {
+            margin: 5px 0;
+            color: white;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="container mt-4">
-        <h2 class="text-center">Book a Test Drive for {{ vehicle.title }}</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label class="form-label">Choose Date:</label>
-                <input type="date" name="date" class="form-control" required>
+    <!-- Your existing navbar --> <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'Customer:Customer_home' %}" class="logo">Auto<span>Sphere</span></a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'Customer:add_vehicle' %}" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Add Vehicle
+                </a>
+                <a href="{% url 'Customer:customer_vehicles' %}" class="nav-link">
+                    <i class="fas fa-car"></i> My Vehicles
+                </a>
+                <a href="{% url 'Customer:view_vehicles' %}" class="nav-link">
+                    <i class="fas fa-search"></i> Browse Vehicles
+                </a>
+                <a href="{% url 'Customer:customer_bookings' %}" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a href="{% url 'Customer:customer_vehicle_bookings' %}" class="nav-link">
+                    <i class="fas fa-bookmark"></i> Vehicle Bookings
+                </a>
+                <a href="{% url 'Customer:customer_profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{% url 'Customer:customer_dashboard' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'Customer:index' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Choose Time:</label>
-                <input type="time" name="time" class="form-control" required>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="booking-container">
+            <div class="vehicle-preview">
+                <div class="vehicle-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3 class="vehicle-title">{{ vehicle.title }}</h3>
+                <p>{{ vehicle.brand }} {{ vehicle.model }} - {{ vehicle.year }}</p>
+                <div class="vehicle-owner-info">
+                    <p><strong>Vehicle Owner:</strong> {{ role }}</p>
+                    <p><strong>Name:</strong> {{ seller.name }}</p>
+                    <p><strong>Address:</strong> {{ seller.address }}</p>
+                    <p><strong>Email:</strong> {{ seller.email }}</p>
+                    <p><strong>Phone:</strong> {{ seller.phone }}</p>
+
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Book Test Drive</button>
-        </form>
-    </div>
+            <div class="vehicle-details">
+                <div class="booking-form">
+                    <div class="form-title">
+                        <h2>Book Your Test Drive</h2>
+                        <p>Choose your preferred date and time</p>
+                    </div>
+
+                    <form id="testDriveForm" method="post">
+                        {% csrf_token %}
+                        <div class="datetime-group">
+                            <div class="form-group">
+                                <label class="form-label">Preferred Date</label>
+                                <input type="date" name="date" class="form-control" required>
+                                <div class="error-message" id="dateError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Preferred Time</label>
+                                <input type="time" name="time" class="form-control" required>
+                                <div class="error-message" id="timeError"></div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-calendar-check"></i>
+                            Confirm Test Drive
+                        </button>
+                    </form>
+
+                    <div class="booking-info">
+                        <p><i class="fas fa-info-circle"></i> Test drives are available from 9:00 AM to 6:00 PM</p>
+                        <p><i class="fas fa-clock"></i> Each test drive session is approximately 30 minutes</p>
+                        <p><i class="fas fa-id-card"></i> Please bring your valid driving license</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Your existing footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <div class="footer-column brand-col">
+                        <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                        <p class="footer-description">Your trusted platform for vehicle transactions and management.</p>
+                        <div class="social-links">
+                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">FAQs</a></li>
+                            <li><a href="#">Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Services</h4>
+                        <ul class="footer-links">
+                            <li><a href="#">Buy Vehicles</a></li>
+                            <li><a href="#">Sell Vehicles</a></li>
+                            <li><a href="#">Vehicle Rental</a></li>
+                            <li><a href="#">Vehicle Insurance</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact Us</h4>
+                        <ul class="footer-contact">
+                            <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                            <li><i class="fas fa-envelope"></i> support@autosphere.com</li>
+                            <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, NY 10001</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <div class="copyright">
+                        <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+                    </div>
+                    <div class="footer-bottom-links">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                        <a href="#">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            document.getElementById('testDriveForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                let isValid = true;
+
+                // Reset error messages
+                document.querySelectorAll('.error-message').forEach(error => {
+                    error.style.display = 'none';
+                });
+                document.querySelectorAll('.form-control').forEach(input => {
+                    input.classList.remove('error');
+                });
+
+                // Get current date and time
+                const now = new Date('2025-03-31T03:07:20');
+                const selectedDate = new Date(this.date.value);
+                const [hours, minutes] = this.time.value.split(':').map(Number);
+                const selectedDateTime = new Date(selectedDate.setHours(hours, minutes));
+
+                // Validate date (not in past and within next 30 days)
+                if (selectedDate < now.setHours(0, 0, 0, 0)) {
+                    showError('date', 'Please select a future date');
+                    isValid = false;
+                }
+
+                const maxDate = new Date();
+                maxDate.setDate(now.getDate() + 30);
+                if (selectedDate > maxDate) {
+                    showError('date', 'Please select a date within the next 30 days');
+                    isValid = false;
+                }
+
+                // Validate time (9 AM to 6 PM)
+                if (hours < 9 || hours >= 18) {
+                    showError('time', 'Please select a time between 9:00 AM and 6:00 PM');
+                    isValid = false;
+                }
+
+                // Validate if selected date time is in the past
+                if (selectedDateTime < now) {
+                    showError('time', 'Please select a future time');
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    this.submit();
+                }
+            });
+
+            function showError(fieldName, message) {
+                const errorElement = document.getElementById(fieldName + 'Error');
+                const inputElement = document.querySelector(`[name="${fieldName}"]`);
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                inputElement.classList.add('error');
+            }
+        </script>
 </body>
+
 </html>

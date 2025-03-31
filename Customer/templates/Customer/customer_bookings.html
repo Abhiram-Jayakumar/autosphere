@@ -3,159 +3,760 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | My Bookings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Your existing root variables and base styles */
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+
+        .main-content {
+            margin-top: 100px;
+            padding: 20px;
+            min-height: calc(100vh - 400px);
+        }
+
+        .bookings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+        }
+
+        /* Custom Tab Styles */
+        .booking-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 10px;
+        }
+
+        .tab-button {
+            padding: 12px 25px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Table Styles */
+        .booking-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px;
+        }
+
+        .booking-table th {
+            background: var(--light);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .booking-table td {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid var(--light-gray);
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .booking-table tr td:first-child {
+            border-left: 1px solid var(--light-gray);
+            border-radius: 8px 0 0 8px;
+        }
+
+        .booking-table tr td:last-child {
+            border-right: 1px solid var(--light-gray);
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Status badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-accepted {
+            background: #DEF7EC;
+            color: #03543F;
+        }
+
+        .status-rejected {
+            background: #FDE2E2;
+            color: #9B1C1C;
+        }
+
+        /* Action buttons */
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-feedback {
+            background: #4FD1C5;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--light-gray);
+        }
+
+        @media (max-width: 768px) {
+            .booking-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .booking-tabs {
+                overflow-x: auto;
+                padding-bottom: 0;
+            }
+
+            .tab-button {
+                flex: 1;
+                text-align: center;
+                padding: 10px;
+            }
+        }
+                /* Footer Styles */
+                .footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 0;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-main {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-col {
+            padding-right: 40px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-logo span {
+            color: var(--accent);
+        }
+
+        .footer-description {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-contact {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-main {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .brand-col {
+                grid-column: 1 / -1;
+                text-align: center;
+                padding-right: 0;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-group,
+            .nav-user-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: center;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .footer-main {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }        /* Navbar Styles */
+        .navbar {
+            background: white;
+            height: 70px;
+            padding: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff3517;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h2 class="text-center">My Bookings</h2>
+    <!-- Your existing navbar -->
+         <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'Customer:Customer_home' %}" class="logo">Auto<span>Sphere</span></a>
+           
+            <div class="nav-links" id="navLinks">
+                <a href="{% url 'Customer:add_vehicle' %}" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Add Vehicle
+                </a>
+                <a href="{% url 'Customer:customer_vehicles' %}" class="nav-link">
+                    <i class="fas fa-car"></i> My Vehicles
+                </a>
+                <a href="{% url 'Customer:view_vehicles' %}" class="nav-link">
+                    <i class="fas fa-search"></i> Browse Vehicles
+                </a>
+                <a href="{% url 'Customer:customer_bookings' %}" class="nav-link">
+                    <i class="fas fa-calendar-check"></i> My Bookings
+                </a>
+                <a href="{% url 'Customer:customer_vehicle_bookings' %}" class="nav-link">
+                    <i class="fas fa-bookmark"></i> Vehicle Bookings
+                </a>
+                <a href="{% url 'Customer:customer_profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{% url 'Customer:customer_dashboard' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'Customer:index' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
 
-        <ul class="nav nav-tabs mt-3">
-            <li class="nav-item">
-                <a class="nav-link active" id="testdrive-tab" data-bs-toggle="tab" href="#testdrive">Test Drives</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="rental-tab" data-bs-toggle="tab" href="#rental">Rentals</a>
-            </li>
-        </ul>
+    <div class="main-content">
+        <div class="bookings-container">
+            <div class="page-title">
+                <h2>My Bookings</h2>
+                <p>Manage your test drives and rentals</p>
+            </div>
 
-        <div class="tab-content mt-3">
-            <!-- Test Drive Bookings -->
-            <div class="tab-pane fade show active" id="testdrive">
-                <h4>Test Drive Bookings</h4>
-                <table class="table table-bordered mt-3">
-                    <thead class="table-dark">
+            <div class="booking-tabs">
+                <button class="tab-button active" data-tab="testdrive">
+                    <i class="fas fa-car"></i> Test Drives
+                </button>
+                <button class="tab-button" data-tab="rental">
+                    <i class="fas fa-key"></i> Rentals
+                </button>
+            </div>
+
+            <!-- Test Drive Tab -->
+            <div id="testdrive" class="tab-content active">
+                {% if test_drives %}
+                <table class="booking-table">
+                    <thead>
                         <tr>
+                            <th>Vehicle-image</th>
                             <th>Vehicle</th>
                             <th>Date</th>
                             <th>Time</th>
                             <th>Status</th>
-                            <th>Payment Status</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for booking in test_drives %}
                         <tr>
-                            <td>{{ booking.vehicle.title }}</td>
+                            <td>
+                                <img src="{{ booking.vehicle.image.url }}" alt="{{ booking.vehicle.title }}" class="vehicle-image" style="width: 50px; height: 50px; border-radius: 8px;">
+                            </td>
+                            <td>
+                                <div class="vehicle-info">
+                                    <strong>{{ booking.vehicle.title }}</strong>
+                                    <div class="text-muted">{{ booking.vehicle.brand }} {{ booking.vehicle.model }}</div>
+                                </div>
+                            </td>
                             <td>{{ booking.date }}</td>
                             <td>{{ booking.time }}</td>
                             <td>
-                                {% if booking.status == "Pending" %}
-                                    <span class="text-warning">Pending</span>
-                                {% elif booking.status == "Accepted" %}
-                                    <span class="text-success">Accepted</span>
-                                {% else %}
-                                    <span class="text-danger">Rejected</span>
-                                {% endif %}
+                                <span class="status-badge status-{{ booking.status|lower }}">
+                                    {{ booking.status }}
+                                </span>
                             </td>
                             <td>
                                 {% if booking.payment_status == "Pending" %}
                                     {% if booking.Contancted == "Contacted" and booking.Intrested == "Pending" %}
-                                        <a href="{% url 'Customer:mark_interested' booking.id %}" class="btn btn-success btn-sm">
-                                            Mark as Interested
+                                        <a href="{% url 'Customer:mark_interested' booking.id %}" class="action-btn btn-success">
+                                            <i class="fas fa-check"></i> Interested
                                         </a>
-                                        <a href="{% url 'Customer:mark_not_interested' booking.id %}" class="btn btn-danger btn-sm">
-                                            Mark as Not Interested
+                                        <a href="{% url 'Customer:mark_not_interested' booking.id %}" class="action-btn btn-danger">
+                                            <i class="fas fa-times"></i> Not Interested
                                         </a>
                                     {% elif booking.Intrested == "Intrested" %}
-                                        <a href="{% url 'Customer:make_payment' booking.id %}" class="btn btn-primary btn-sm">
-                                            Make Payment
+                                        <a href="{% url 'Customer:make_payment' booking.id %}" class="action-btn btn-primary">
+                                            <i class="fas fa-credit-card"></i> Make Payment
                                         </a>
                                     {% elif booking.Intrested == "Not-Intrested" %}
-                                        <span class="text-danger">Not Interested</span>
+                                        <span class="status-badge status-rejected">Not Interested</span>
                                     {% else %}
-                                        <span class="text-warning">Pending</span>
+                                        <span class="status-badge status-pending">Pending Contact</span>
                                     {% endif %}
                                 {% else %}
-                                    <span class="text-success">Paid</span>
+                                    <span class="status-badge status-accepted">Paid</span>
                                 {% endif %}
                             </td>
-                            
-                            
-                            
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="5" class="text-center">No test drive bookings found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-car-side"></i>
+                    <p>No test drive bookings found</p>
+                    <a href="{% url 'Customer:view_vehicles' %}" class="action-btn btn-primary">
+                        <i class="fas fa-search"></i> Browse Vehicles
+                    </a>
+                </div>
+                {% endif %}
             </div>
 
-            <!-- Rental Bookings -->
-            <div class="tab-pane fade" id="rental">
-                <h4>Rental Bookings</h4>
-                <table class="table table-bordered mt-3">
-                    <thead class="table-dark">
+            <!-- Rental Tab -->
+            <div id="rental" class="tab-content">
+                {% if rentals %}
+                <table class="booking-table">
+                    <thead>
                         <tr>
+                            <th>Vehicle-image</th>
                             <th>Vehicle</th>
-                            <th>Rental Date</th>
-                            <th>Return Date</th>
-                            <th>Accessories</th>
+                            <th>Rental Period</th>
                             <th>Status</th>
                             <th>Amount</th>
-                            <th>Payment Status</th>
-                            <th>Feedback</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for booking in rentals %}
                         <tr>
-                            <td>{{ booking.vehicle.title }}</td>
-                            <td>{{ booking.rental_date }}</td>
-                            <td>{{ booking.return_date }}</td>
-                            <td>{{ booking.accessories_needed|default:"None" }}</td>
                             <td>
-                                {% if booking.status == "Pending" %}
-                                    <span class="text-warning">Pending</span>
-                                {% elif booking.status == "Accepted" %}
-                                    <span class="text-success">Accepted</span>
-                                {% else %}
-                                    <span class="text-danger">Rejected</span>
-                                {% endif %}
+                                <img src="{{ booking.vehicle.image.url }}" alt="{{ booking.vehicle.title }}" class="vehicle-image" style="width: 50px; height: 50px; border-radius: 8px;">
                             </td>
-                            <td>{{ booking.vehicle.price }}</td>
+                            <td>
+                                <div class="vehicle-info">
+                                    <strong>{{ booking.vehicle.title }}</strong>
+                                    <div class="text-muted">{{ booking.accessories_needed|default:"No accessories" }}</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div>From: {{ booking.rental_date }}</div>
+                                <div>To: {{ booking.return_date }}</div>
+                            </td>
+                            <td>
+                                <span class="status-badge status-{{ booking.status|lower }}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                            <td>₹{{ booking.vehicle.price }}</td>
                             <td>
                                 {% if booking.payment_status == "Pending" %}
                                     {% if booking.status == "Accepted" %}
-                                        <a href="{% url 'Customer:make_rental_payment' booking.id %}" class="btn btn-primary btn-sm">
-                                            Pay Rental Amount
+                                        <a href="{% url 'Customer:make_rental_payment' booking.id %}" class="action-btn btn-primary">
+                                            <i class="fas fa-credit-card"></i> Pay Now
                                         </a>
                                     {% else %}
-                                        <span class="text-danger">Pending</span>
+                                        <span class="status-badge status-pending">Awaiting Approval</span>
                                     {% endif %}
                                 {% else %}
-                                    <span class="text-success">Paid</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if booking.payment_status == "Paid" %}
                                     {% if booking.feedback %}
-                                        <span class="text-info">{{ booking.feedback }}</span>
+                                        <span class="status-badge status-accepted">Feedback Provided</span>
                                     {% else %}
-                                        <a href="{% url 'Customer:add_rental_feedback' booking.id %}" class="btn btn-success btn-sm">
-                                            Add Feedback
+                                        <a href="{% url 'Customer:add_rental_feedback' booking.id %}" class="action-btn btn-feedback">
+                                            <i class="fas fa-comment"></i> Add Feedback
                                         </a>
                                     {% endif %}
-                                {% else %}
-                                    <span class="text-danger">Pending</span>
                                 {% endif %}
                             </td>
-                            
-                            
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="6" class="text-center">No rental bookings found.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-key"></i>
+                    <p>No rental bookings found</p>
+                    <a href="{% url 'Customer:view_vehicles' %}?type=rent" class="action-btn btn-primary">
+                        <i class="fas fa-search"></i> Browse Rentals
+                    </a>
+                </div>
+                {% endif %}
             </div>
         </div>
-
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Your existing footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-column brand-col">
+                    <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                    <p class="footer-description">Your trusted platform for vehicle transactions and management.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Buy Vehicles</a></li>
+                        <li><a href="#">Sell Vehicles</a></li>
+                        <li><a href="#">Vehicle Rental</a></li>
+                        <li><a href="#">Vehicle Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                        <li><i class="fas fa-envelope"></i> support@autosphere.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, NY 10001</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Tab switching functionality
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+
+                // Update active states
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                button.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
