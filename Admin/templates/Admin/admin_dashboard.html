@@ -3,100 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --secondary: #5C6AC4;
+            --success: #47B881;
+            --warning: #F7D154;
+            --danger: #EC4C47;
+            --light: #F8F9FA;
+            --dark: #2D3748;
+            --gray: #718096;
+            --gradient-primary: linear-gradient(135deg, #4A90E2, #357ABD);
+            --gradient-secondary: linear-gradient(135deg, #5C6AC4, #4C5AA3);
+            --gradient-success: linear-gradient(135deg, #47B881, #3B9A6D);
+            --gradient-warning: linear-gradient(135deg, #F7D154, #E5BE3D);
+            --gradient-danger: linear-gradient(135deg, #EC4C47, #D43E39);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Navbar Styles */
+        .admin-navbar {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.primary { background: var(--gradient-primary); }
+        .stat-card.secondary { background: var(--gradient-secondary); }
+        .stat-card.success { background: var(--gradient-success); }
+        .stat-card.warning { background: var(--gradient-warning); }
+        .stat-card.danger { background: var(--gradient-danger); }
+
+        .stat-title {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .performance-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .performance-table th,
+        .performance-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .performance-table th {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .performance-table td {
+            color: var(--gray);
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid,
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">System Performance Overview</h2>
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-container">
+            <a href="{% url 'Admin:Admin_home' %}" class="brand">
+                <i class="fas fa-car"></i>
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
 
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-primary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Vehicles for Sale</h5>
-                        <p class="card-text fs-4">{{ total_sale_vehicles }}</p>
-                    </div>
-                </div>
+            <div class="nav-menu">
+                <a href="{% url 'Admin:admin_customer_list' %}" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    Customers
+                </a>
+                <a href="{% url 'Admin:admin_dealer_list' %}" class="nav-link">
+                    <i class="fas fa-user-tie"></i>
+                    Dealers
+                </a>
+                <a href="{% url 'Admin:admin_showroom_list' %}" class="nav-link">
+                    <i class="fas fa-building"></i>
+                    Showrooms
+                </a>
+                <a href="{% url 'Admin:view_complaints' %}" class="nav-link">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Complaints
+                </a>
+                <a href="{% url 'Customer:index' %}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
             </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-secondary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Vehicles for Rent</h5>
-                        <p class="card-text fs-4">{{ total_rental_vehicles }}</p>
-                    </div>
-                </div>
+
+            <div class="user-profile">
+                <span>Admin</span>
             </div>
-            <div class="col-md-4">
-                <div class="card text-white bg-success mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Sales</h5>
-                        <p class="card-text fs-4">{{ total_sales }}</p>
-                    </div>
-                </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">System Performance Overview</h1>
+            <p class="current-date" id="currentDate"></p>
+        </div>
+
+        <!-- Statistics Grid -->
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <h3 class="stat-title">Total Vehicles for Sale</h3>
+                <div class="stat-value">{{ total_sale_vehicles }}</div>
+            </div>
+
+            <div class="stat-card secondary">
+                <h3 class="stat-title">Total Vehicles for Rent</h3>
+                <div class="stat-value">{{ total_rental_vehicles }}</div>
+            </div>
+
+            <div class="stat-card success">
+                <h3 class="stat-title">Total Sales</h3>
+                <div class="stat-value">{{ total_sales }}</div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card text-white bg-warning mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Rentals</h5>
-                        <p class="card-text fs-4">{{ total_rentals }}</p>
-                    </div>
-                </div>
+        <div class="stats-row">
+            <div class="stat-card warning">
+                <h3 class="stat-title">Total Rentals</h3>
+                <div class="stat-value">{{ total_rentals }}</div>
             </div>
-            <div class="col-md-6">
-                <div class="card text-white bg-danger mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Total Revenue</h5>
-                        <p class="card-text fs-4">₹ {{ total_revenue|floatformat:2 }}</p>
-                    </div>
-                </div>
+
+            <div class="stat-card danger">
+                <h3 class="stat-title">Total Revenue</h3>
+                <div class="stat-value">₹{{ total_revenue|floatformat:2 }}</div>
             </div>
         </div>
 
-        <h3 class="mt-4">Top Performers</h3>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Top Selling Vehicle</td>
-                    <td>
-                        {% if top_selling_vehicle %}
-                            {{ top_selling_vehicle.vehicle__brand }} {{ top_selling_vehicle.vehicle__model }} ({{ top_selling_vehicle.count }} Sales)
-                        {% else %}
-                            No data available
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Top Selling Dealer</td>
-                    <td>
-                        {% if top_selling_dealer %}
-                            {{ top_selling_dealer.name }} ({{ top_selling_dealer.total_sales }} Sales)
-                        {% else %}
-                            No data available
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Customer with Most Bookings</td>
-                    <td>
-                        {% if top_booking_customer %}
-                            {{ top_booking_customer.name }} ({{ top_booking_customer.total_bookings }} Bookings)
-                        {% else %}
-                            No data available
-                        {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Performance Section -->
+        <div class="performance-section">
+            <h3 class="section-title">Top Performers</h3>
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Top Selling Vehicle</td>
+                        <td>
+                            {% if top_selling_vehicle %}
+                                {{ top_selling_vehicle.vehicle__brand }} {{ top_selling_vehicle.vehicle__model }}
+                                <span class="badge bg-success">{{ top_selling_vehicle.count }} Sales</span>
+                            {% else %}
+                                No data available
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Top Selling Dealer</td>
+                        <td>
+                            {% if top_selling_dealer %}
+                                {{ top_selling_dealer.name }}
+                                <span class="badge bg-success">{{ top_selling_dealer.total_sales }} Sales</span>
+                            {% else %}
+                                No data available
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Most Active Customer</td>
+                        <td>
+                            {% if top_booking_customer %}
+                                {{ top_booking_customer.name }}
+                                <span class="badge bg-primary">{{ top_booking_customer.total_bookings }} Bookings</span>
+                            {% else %}
+                                No data available
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <script>
+        // Update current date
+        function updateDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        }
+        updateDate();
+        setInterval(updateDate, 60000);
+
+        // Add active state to current nav link
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.color = 'var(--primary)';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,49 +1,523 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Registered Showrooms</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSphere | Registered Showrooms</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #4A90E2;
+            --secondary: #5C6AC4;
+            --success: #47B881;
+            --warning: #F7D154;
+            --danger: #EC4C47;
+            --light: #F8F9FA;
+            --dark: #2D3748;
+            --gray: #718096;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Navbar Styles */
+        .admin-navbar {
+            background: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Content Styles */
+        .content-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 28px;
+            color: var(--dark);
+        }
+
+        .datetime {
+            color: var(--gray);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .showroom-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .showroom-table th,
+        .showroom-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .showroom-table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+
+        .showroom-table tr:hover {
+            background: var(--light);
+        }
+
+        /* Profile Image */
+        .profile-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-placeholder {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #EDF2F7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-approved {
+            background: #DEF7EC;
+            color: var(--success);
+        }
+
+        .status-pending {
+            background: #FEF3C7;
+            color: var(--warning);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--light);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .showroom-table {
+                min-width: 800px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>Registered Showrooms</h2>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Profile Image</th>
-                    <th>Approval Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for showroom in showrooms %}
-                <tr>
-                    <td>{{ showroom.name }}</td>
-                    <td>{{ showroom.email }}</td>
-                    <td>{{ showroom.phone }}</td>
-                    <td>
-                        {% if showroom.profile_image_showroom %}
-                            <img src="{{ showroom.profile_image_showroom.url }}" alt="Profile Image" width="50" height="50">
-                        {% else %}
-                            No Image
-                        {% endif %}
-                    </td>
-                    <td>{{ showroom.approval_status|yesno:"Approved,Pending" }}</td>
-                    <td>
-                        {% if not showroom.approval_status %}
-                            <a href="{% url 'Admin:approve_showroom' showroom.id %}" class="btn btn-success btn-sm">Approve</a>
-                            <a href="{% url 'Admin:reject_showroom' showroom.id %}" class="btn btn-danger btn-sm">Reject</a>
-                        {% else %}
-                            <button class="btn btn-secondary btn-sm" disabled>Approved</button>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <div class="navbar-container">
+            <a href="{% url 'Admin:Admin_home' %}" class="brand">
+                <i class="fas fa-car"></i>
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
+
+            <div class="nav-menu">
+                <a href="{% url 'Admin:admin_dashboard' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+                <a href="{% url 'Admin:admin_customer_list' %}" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    Customers
+                </a>
+                <a href="{% url 'Admin:admin_dealer_list' %}" class="nav-link">
+                    <i class="fas fa-user-tie"></i>
+                    Dealers
+                </a>
+                <a href="{% url 'Admin:view_complaints' %}" class="nav-link">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Complaints
+                </a>
+                <a href="{% url 'Customer:index' %}" class="nav-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+
+            
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content-container">
+        <div class="page-header">
+            <h1 class="page-title">Registered Showrooms</h1>
+            <div class="datetime">
+                <i class="far fa-clock"></i>
+                2025-03-31 12:52:32 UTC
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--primary)">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Total Showrooms</h3>
+                    <p>{{ showrooms|length }}</p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--success)">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Approved Showrooms</h3>
+                    <p></p>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon" style="background: var(--warning)">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Pending Approval</h3>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <!-- Showrooms Table -->
+        <div class="table-container">
+            <table class="showroom-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Profile</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for showroom in showrooms %}
+                    <tr>
+                        <td>{{ showroom.name }}</td>
+                        <td>{{ showroom.email }}</td>
+                        <td>{{ showroom.phone }}</td>
+                        <td>
+                            {% if showroom.profile_image_showroom %}
+                                <img src="{{ showroom.profile_image_showroom.url }}" alt="Profile" class="profile-image">
+                            {% else %}
+                                <div class="profile-placeholder">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="status-badge {% if showroom.approval_status %}status-approved{% else %}status-pending{% endif %}">
+                                {{ showroom.approval_status|yesno:"Approved,Pending" }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                {% if not showroom.approval_status %}
+                                    <a href="{% url 'Admin:approve_showroom' showroom.id %}" class="btn btn-success">
+                                        <i class="fas fa-check"></i>
+                                        Approve
+                                    </a>
+                                    <a href="{% url 'Admin:reject_showroom' showroom.id %}" class="btn btn-danger">
+                                        <i class="fas fa-times"></i>
+                                        Reject
+                                    </a>
+                                {% else %}
+                                    <button class="btn btn-secondary" disabled>
+                                        <i class="fas fa-check-circle"></i>
+                                        Approved
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <script>
+        // Search functionality
+        document.getElementById('showroomSearch').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.showroom-table tbody tr');
+            
+            rows.forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                const email = row.cells[1].textContent.toLowerCase();
+                const phone = row.cells[2].textContent.toLowerCase();
+                
+                if (name.includes(searchText) || email.includes(searchText) || phone.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        // Active nav link
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.style.color = 'var(--primary)';
+            }
+        });
+
+        // Update datetime
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: '2-digit', 
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+                timeZone: 'UTC'
+            };
+            document.querySelector('.datetime').innerHTML = `
+                <i class="far fa-clock"></i>
+                ${now.toLocaleString('en-US', options)} UTC
+            `;
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
 </body>
 </html>
