@@ -3,52 +3,732 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Details</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | {{ vehicle.brand }} {{ vehicle.model }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        .navbar {
+        background: white;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--dark);
+        text-decoration: none;
+    }
+
+    .logo i {
+        color: #3563E9;
+        font-size: 28px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    .nav-links a i {
+        font-size: 16px;
+    }
+
+    .user-menu {
+        position: relative;
+    }
+
+    .user-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--light);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--dark);
+        transition: all 0.3s;
+    }
+
+    .user-button:hover {
+        background: var(--light-gray);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 8px;
+        min-width: 200px;
+        display: none;
+    }
+
+    .user-menu:hover .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        color: var(--dark);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+
+    .user-dropdown a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    @media (max-width: 1200px) {
+        .nav-links a span {
+            display: none;
+        }
+
+        .nav-links {
+            gap: 15px;
+        }
+
+        .nav-links a {
+            padding: 8px;
+        }
+
+        .nav-links a i {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .user-button span {
+            display: none;
+        }
+    }
+    /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Keep your existing root styles and add: */
+
+        .vehicle-details-container {
+            max-width: 1200px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .vehicle-price {
+            font-size: 24px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .details-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .vehicle-gallery {
+            position: relative;
+            background: var(--light);
+            padding: 30px;
+        }
+
+        .gallery-main {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-main img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .details-content {
+            padding: 40px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .specs-group {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .specs-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .specs-title i {
+            color: var(--primary);
+        }
+
+        .specs-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .specs-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .specs-label {
+            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .specs-value {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .specs-value.yes {
+            color: var(--success);
+        }
+
+        .specs-value.no {
+            color: var(--error);
+        }
+
+        .features-section {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .feature-item i {
+            color: var(--primary);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(53, 99, 233, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-main img {
+                height: 300px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center">{{ vehicle.brand }} - {{ vehicle.model }}</h2>
+    <!-- Add your navbar here -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'Dealer:Dealer_home' %}" class="logo">
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'Dealer:dealer_dashboard' %}">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicle_list' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Buy Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:add_vehicle' %}">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicles' %}">
+                        <i class="fas fa-car"></i>
+                        My Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_bookings' %}">
+                        <i class="fas fa-calendar-check"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:Dealer_booked_vehicel' %}">
+                        <i class="fas fa-bookmark"></i>
+                        Booked Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_profile' %}">
+                        <i class="fas fa-user-circle"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Customer:index' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-        <div class="card p-4 mt-3">
-            <div class="row">
-                <div class="col-md-6 text-center">
+    <div class="vehicle-details-container">
+        <div class="page-header">
+            <h2>{{ vehicle.brand }} {{ vehicle.model }}</h2>
+            <div class="vehicle-price">₹{{ vehicle.price }} Lakh</div>
+        </div>
+
+        <div class="details-card">
+            <div class="vehicle-gallery">
+                <div class="gallery-main">
                     {% if vehicle.image %}
-                        <img src="{{ vehicle.image.url }}" alt="{{ vehicle.brand }} {{ vehicle.model }}" class="img-fluid rounded">
+                        <img src="{{ vehicle.image.url }}" alt="{{ vehicle.brand }} {{ vehicle.model }}">
                     {% else %}
-                        <p class="text-muted">No image available</p>
+                        <div class="no-image">
+                            <i class="fas fa-car fa-3x"></i>
+                            <p>No image available</p>
+                        </div>
                     {% endif %}
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Brand:</strong> {{ vehicle.brand }}</p>
-                    <p><strong>Model:</strong> {{ vehicle.model }}</p>
-                    <p><strong>Price:</strong> ₹{{ vehicle.price }} Lakh</p>
-                    <p><strong>Year:</strong> {{ vehicle.year }}</p>
-                    <p><strong>Mileage:</strong> {{ vehicle.mileage }} kmpl</p>
-                    <p><strong>Fuel Type:</strong> {{ vehicle.fuel_type }}</p>
-                    <p><strong>Transmission:</strong> {{ vehicle.transmission }}</p>
-                    <p><strong>Condition:</strong> {{ vehicle.features.condition }}</p>
-                    <p><strong>Color:</strong> {{ vehicle.features.color }}</p>
-                    <p><strong>Seating Capacity:</strong> {{ vehicle.features.seating_capacity }}</p>
-                    <p><strong>Engine Capacity:</strong> {{ vehicle.features.engine_capacity }}</p>
-                    <p><strong>Fuel Tank Capacity:</strong> {{ vehicle.features.fuel_tank_capacity }} L</p>
-                    <p><strong>Safety Rating:</strong> {{ vehicle.features.safety_rating }}/5</p>
-                    <p><strong>GPS:</strong> {% if vehicle.features.gps_enabled %} Yes {% else %} No {% endif %}</p>
-                    <p><strong>Bluetooth:</strong> {% if vehicle.features.bluetooth_connectivity %} Yes {% else %} No {% endif %}</p>
-                    <p><strong>Insurance Valid Till:</strong> {{ vehicle.features.insurance_valid_till }}</p>
-                    <p><strong>Warranty Available:</strong> {% if vehicle.features.warranty_available %} Yes {% else %} No {% endif %}</p>
-                    <p><strong>Negotiable Price:</strong> {% if vehicle.features.negotiable %} Yes {% else %} No {% endif %}</p>
                 </div>
             </div>
 
-            <hr>
-            <h4>Features:</h4>
-            <p>{{ vehicle.features.features|default:"No additional features listed." }}</p>
+            <div class="details-content">
+                <div class="specs-grid">
+                    <div class="specs-group">
+                        <div class="specs-title">
+                            <i class="fas fa-car"></i>
+                            Basic Information
+                        </div>
+                        <div class="specs-list">
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-tag"></i>
+                                    Brand
+                                </div>
+                                <div class="specs-value">{{ vehicle.brand }}</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-car-side"></i>
+                                    Model
+                                </div>
+                                <div class="specs-value">{{ vehicle.model }}</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-calendar"></i>
+                                    Year
+                                </div>
+                                <div class="specs-value">{{ vehicle.year }}</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    Mileage
+                                </div>
+                                <div class="specs-value">{{ vehicle.mileage }} kmpl</div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="text-center mt-3">
-                <a href="{% url 'Dealer:book_test_drive' vehicle.id %}" class="btn btn-primary">Book Test Drive</a>
+                    <div class="specs-group">
+                        <div class="specs-title">
+                            <i class="fas fa-cogs"></i>
+                            Technical Specifications
+                        </div>
+                        <div class="specs-list">
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-gas-pump"></i>
+                                    Fuel Type
+                                </div>
+                                <div class="specs-value">{{ vehicle.fuel_type }}</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-cog"></i>
+                                    Transmission
+                                </div>
+                                <div class="specs-value">{{ vehicle.transmission }}</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-engine"></i>
+                                    Engine Capacity
+                                </div>
+                                <div class="specs-value">{{ vehicle.features.engine_capacity }}</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-gas-pump"></i>
+                                    Fuel Tank
+                                </div>
+                                <div class="specs-value">{{ vehicle.features.fuel_tank_capacity }} L</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="specs-group">
+                        <div class="specs-title">
+                            <i class="fas fa-shield-alt"></i>
+                            Safety & Features
+                        </div>
+                        <div class="specs-list">
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-star"></i>
+                                    Safety Rating
+                                </div>
+                                <div class="specs-value">{{ vehicle.features.safety_rating }}/5</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    GPS
+                                </div>
+                                <div class="specs-value {% if vehicle.features.gps_enabled %}yes{% else %}no{% endif %}">
+                                    {% if vehicle.features.gps_enabled %}Yes{% else %}No{% endif %}
+                                </div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fab fa-bluetooth-b"></i>
+                                    Bluetooth
+                                </div>
+                                <div class="specs-value {% if vehicle.features.bluetooth_connectivity %}yes{% else %}no{% endif %}">
+                                    {% if vehicle.features.bluetooth_connectivity %}Yes{% else %}No{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="specs-group">
+                        <div class="specs-title">
+                            <i class="fas fa-file-contract"></i>
+                            Additional Information
+                        </div>
+                        <div class="specs-list">
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-file-shield"></i>
+                                    Insurance Valid Till
+                                </div>
+                                <div class="specs-value">{{ vehicle.features.insurance_valid_till }}</div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-shield-check"></i>
+                                    Warranty
+                                </div>
+                                <div class="specs-value {% if vehicle.features.warranty_available %}yes{% else %}no{% endif %}">
+                                    {% if vehicle.features.warranty_available %}Yes{% else %}No{% endif %}
+                                </div>
+                            </div>
+                            <div class="specs-item">
+                                <div class="specs-label">
+                                    <i class="fas fa-handshake"></i>
+                                    Negotiable
+                                </div>
+                                <div class="specs-value {% if vehicle.features.negotiable %}yes{% else %}no{% endif %}">
+                                    {% if vehicle.features.negotiable %}Yes{% else %}No{% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if vehicle.features.features %}
+                <div class="features-section">
+                    <div class="specs-title">
+                        <i class="fas fa-list-check"></i>
+                        Additional Features
+                    </div>
+                    <div class="features-list">
+                        {{ vehicle.features.features|default:"No additional features listed." }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="action-buttons">
+                    <a href="{% url 'Dealer:book_test_drive' vehicle.id %}" class="btn btn-primary">
+                        <i class="fas fa-car"></i>
+                        Book Test Drive
+                    </a>
+                    <a href="#" class="btn btn-outline" style="text-decoration:line-through;">
+                        <i class="fas fa-phone"></i>
+                        Contact Dealer
+                    </a>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Add your footer here -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-links">
+                <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                <p>Your trusted platform for buying, selling, and renting vehicles.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'Dealer:dealer_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'Dealer:add_vehicle' %}">Add Vehicle</a></li>
+                    <li><a href="{% url 'Dealer:dealer_vehicles' %}">My Vehicles</a></li>
+                    <li><a href="{% url 'Dealer:dealer_bookings' %}">Bookings</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -3,16 +3,536 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dealer Home</title>
+    <title>AutoSphere | Dealer Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://i.postimg.cc/x1Zsf6mw/car-rental-concept-illustration-114360-9267.avif') no-repeat center;
+            background-size: cover;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            margin-top: 70px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px;
+            border-radius: 15px;
+            background: var(--light);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(120deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .stat-item h3 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .testimonial-card {
+            background: var(--light);
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        .testimonial-text {
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Call to Action */
+        .cta {
+            padding: 80px 0;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 76, 48, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .features-grid,
+            .stats-grid,
+            .testimonial-grid,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Dealer Home</h1>
-    <a href="{% url 'Dealer:add_vehicle' %}">Add Vehicle</a><br>
-    <a href="{% url 'Dealer:dealer_vehicles' %}">dealer_vehicles</a><br>
-    <a href="{% url 'Dealer:dealer_bookings' %}">dealer_bookings</a><br>
-    <a href="{% url 'Dealer:dealer_vehicle_list' %}">dealer_vehicle_list</a><br>
-    <a href="{% url 'Dealer:Dealer_booked_vehicel' %}">Dealer_booked_vehicel</a><br>
-    <a href="{% url 'Dealer:dealer_profile' %}">dealer_profile</a><br>
-    <a href="{% url 'Dealer:dealer_dashboard' %}">dealer_dashboard</a><br>
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'Dealer:Dealer_home' %}" class="logo">
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'Dealer:dealer_dashboard' %}">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicle_list' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Buy Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:add_vehicle' %}">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicles' %}">
+                        <i class="fas fa-car"></i>
+                        My Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_bookings' %}">
+                        <i class="fas fa-calendar-check"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:Dealer_booked_vehicel' %}">
+                        <i class="fas fa-bookmark"></i>
+                        Booked Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_profile' %}">
+                        <i class="fas fa-user-circle"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Customer:index' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Welcome to AutoSphere Dealer Portal</h1>
+            <p>Manage your vehicle listings, track bookings, and grow your business all in one place</p>
+            <a href="{% url 'Dealer:add_vehicle' %}" class="btn btn-primary">Add New Vehicle</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="section-title">
+            <h2>Why Choose AutoSphere?</h2>
+            <p>Experience the benefits of selling with us</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-globe feature-icon"></i>
+                <h3>Wide Reach</h3>
+                <p>Access thousands of potential buyers across the country</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt feature-icon"></i>
+                <h3>Secure Transactions</h3>
+                <p>Safe and verified payment processing for all deals</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line feature-icon"></i>
+                <h3>Business Growth</h3>
+                <p>Tools and insights to help you expand your business</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>10K+</h3>
+                <p>Active Listings</p>
+            </div>
+            <div class="stat-item">
+                <h3>5K+</h3>
+                <p>Happy Customers</p>
+            </div>
+            <div class="stat-item">
+                <h3>95%</h3>
+                <p>Success Rate</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Support</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="section-title">
+            <h2>What Dealers Say</h2>
+            <p>Success stories from our community</p>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"AutoSphere has transformed how I sell vehicles. The platform is easy to use and the customer support is exceptional."</p>
+                <div class="testimonial-author">
+                    <img src="https://i.postimg.cc/qRVjngjQ/download.jpg" alt="John Doe" class="author-image">
+                    <div>
+                        <h4>John Doe</h4>
+                        <p>Premium Motors</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"Since joining AutoSphere, my sales have increased by 40%. The platform provides excellent visibility for my inventory."</p>
+                <div class="testimonial-author">
+                    <img src="https://i.postimg.cc/qRVjngjQ/download.jpg" alt="Jane Smith" class="author-image">
+                    <div>
+                        <h4>Jane Smith</h4>
+                        <p>Elite Cars</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"The analytics and insights provided by AutoSphere help me make better business decisions. Highly recommended!"</p>
+                <div class="testimonial-author">
+                    <img src="https://i.postimg.cc/qRVjngjQ/download.jpg" alt="Mike Johnson" class="author-image">
+                    <div>
+                        <h4>Mike Johnson</h4>
+                        <p>City Motors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="cta-content">
+            <h2>Ready to Boost Your Sales?</h2>
+            <p>Start listing your vehicles today and reach thousands of potential buyers</p>
+            <a href="{% url 'Dealer:add_vehicle' %}" class="btn btn-primary">Get Started</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-links">
+                <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                <p>Your trusted platform for buying, selling, and renting vehicles.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'Dealer:dealer_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'Dealer:add_vehicle' %}">Add Vehicle</a></li>
+                    <li><a href="{% url 'Dealer:dealer_vehicles' %}">My Vehicles</a></li>
+                    <li><a href="{% url 'Dealer:dealer_bookings' %}">Bookings</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>

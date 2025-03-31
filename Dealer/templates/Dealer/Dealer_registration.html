@@ -1,34 +1,602 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dealer Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSphere | Dealer Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+           :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+         /* Navbar Styles */
+         .navbar {
+            background: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+
+        .registration-container {
+            max-width: 800px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--gray);
+        }
+
+        .registration-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .password-input-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        .file-upload {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border: 2px dashed var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .file-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .file-preview img {
+            max-width: 150px;
+            border-radius: 8px;
+        }
+
+        .requirements {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .requirement i {
+            font-size: 12px;
+        }
+
+        .requirement.valid {
+            color: var(--success);
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Dealer Registration</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label>Name:</label>
-        <input type="text" name="name" required><br>
-        
-        <label>Email:</label>
-        <input type="email" name="email" required><br>
-        
-        <label>Phone:</label>
-        <input type="text" name="phone" required><br>
-        
-        <label>Password:</label>
-        <input type="text" name="password" required><br>
-        
-        <label>ID Proof Number:</label>
-        <input type="text" name="id_proof_number" required><br>
-        
-        <label>Address:</label>
-        <textarea name="address" required></textarea><br>
-        
-        <label>Profile Image:</label>
-        <input type="file" name="profile_image_dealer"><br>
-        
-        <button type="submit">Register</button>
-    </form>
+    <!-- Add your navbar here -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="#" class="logo"><span style="color: #3563E9;">Auto</span><span>Sphere</span></a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Buy</a></li>
+                    <li><a href="#">Sell</a></li>
+                    <li><a href="#">Rent</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="{% url 'Customer:submit_complaint'%}">Complaint</a></li>
+                </ul>
+                <div>
+                    <a href="{% url 'Customer:Login'%}" class="btn btn-outline">Sign In</a>
+                    <a href="{% url 'Customer:registration'%}" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="registration-container">
+        <div class="page-header">
+            <h2>Become an AutoSphere Dealer</h2>
+            <p>Join our network of trusted automotive dealers</p>
+        </div>
+
+        <div class="registration-card">
+            <form method="post" enctype="multipart/form-data" id="registrationForm">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i>
+                            Full Name
+                        </label>
+                        <input type="text" name="name" class="form-control" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input type="email" name="email" class="form-control" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-phone"></i>
+                            Phone Number
+                        </label>
+                        <input type="text" name="phone" class="form-control" required>
+                        <div class="error-message" id="phoneError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-id-card"></i>
+                            ID Proof Number
+                        </label>
+                        <input type="text" name="id_proof_number" class="form-control" required>
+                        <div class="error-message" id="idProofError"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Business Address
+                        </label>
+                        <textarea name="address" class="form-control" required></textarea>
+                        <div class="error-message" id="addressError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <div class="password-input-group">
+                            <input type="password" name="password" class="form-control" required>
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                        <div class="error-message" id="passwordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i>
+                            Confirm Password
+                        </label>
+                        <div class="password-input-group">
+                            <input type="password" name="confirm_password" class="form-control" required>
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                        <div class="error-message" id="confirmPasswordError"></div>
+                    </div>
+                </div>
+
+                <div class="requirements">
+                    <div class="requirement" data-requirement="length">
+                        <i class="fas fa-circle"></i>
+                        Password must be at least 8 characters long
+                    </div>
+                    <div class="requirement" data-requirement="uppercase">
+                        <i class="fas fa-circle"></i>
+                        Contains at least one uppercase letter
+                    </div>
+                    <div class="requirement" data-requirement="lowercase">
+                        <i class="fas fa-circle"></i>
+                        Contains at least one lowercase letter
+                    </div>
+                    <div class="requirement" data-requirement="number">
+                        <i class="fas fa-circle"></i>
+                        Contains at least one number
+                    </div>
+                    <div class="requirement" data-requirement="special">
+                        <i class="fas fa-circle"></i>
+                        Contains at least one special character
+                    </div>
+                </div>
+
+                <div class="form-group full-width">
+                    <label class="form-label">
+                        <i class="fas fa-image"></i>
+                        Profile Image
+                    </label>
+                    <div class="file-upload">
+                        <label class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                            <div>
+                                <h4>Drop your profile image here</h4>
+                                <p>or click to browse</p>
+                            </div>
+                            <input type="file" name="profile_image_dealer" style="display: none;" accept="image/*">
+                        </label>
+                        <div class="file-preview"></div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Register as Dealer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add your footer here -->
+
+    <script>
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    this.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    this.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
+
+        // File upload preview
+        const fileInput = document.querySelector('input[type="file"]');
+        const filePreview = document.querySelector('.file-preview');
+
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    filePreview.style.display = 'block';
+                    filePreview.innerHTML = `
+                        <img src="${e.target.result}" alt="Profile Preview">
+                        <p>Selected: ${file.name}</p>
+                    `;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Form validation
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            let isValid = true;
+
+            // Reset errors
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            // Validate name
+            const name = document.querySelector('input[name="name"]').value;
+            if (name.length < 3) {
+                showError('name', 'Name must be at least 3 characters long');
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.querySelector('input[name="email"]').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Validate phone
+            const phone = document.querySelector('input[name="phone"]').value;
+            if (!/^\d{10}$/.test(phone)) {
+                showError('phone', 'Please enter a valid 10-digit phone number');
+                isValid = false;
+            }
+
+            // Validate ID proof
+            const idProof = document.querySelector('input[name="id_proof_number"]').value;
+            if (idProof.length < 6) {
+                showError('idProof', 'Please enter a valid ID proof number');
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPassword = document.querySelector('input[name="confirm_password"]').value;
+
+            if (password.length < 8) {
+                showError('password', 'Password must be at least 8 characters long');
+                isValid = false;
+            }
+
+            if (!/[A-Z]/.test(password)) {
+                showError('password', 'Password must contain at least one uppercase letter');
+                isValid = false;
+            }
+
+            if (!/[a-z]/.test(password)) {
+                showError('password', 'Password must contain at least one lowercase letter');
+                isValid = false;
+            }
+
+            if (!/[0-9]/.test(password)) {
+                showError('password', 'Password must contain at least one number');
+                isValid = false;
+            }
+
+            if (!/[^A-Za-z0-9]/.test(password)) {
+                showError('password', 'Password must contain at least one special character');
+                isValid = false;
+            }
+
+            if (password !== confirmPassword) {
+                showError('confirmPassword', 'Passwords do not match');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        // Password strength indicator
+        const passwordInput = document.querySelector('input[name="password"]');
+        const requirements = document.querySelectorAll('.requirement');
+
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            
+            const checks = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[^A-Za-z0-9]/.test(password)
+            };
+
+            Object.keys(checks).forEach(key => {
+                const requirement = document.querySelector(`[data-requirement="${key}"]`);
+                if (checks[key]) {
+                    requirement.classList.add('valid');
+                    requirement.querySelector('i').classList.replace('fa-circle', 'fa-check-circle');
+                } else {
+                    requirement.classList.remove('valid');
+                    requirement.querySelector('i').classList.replace('fa-check-circle', 'fa-circle');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

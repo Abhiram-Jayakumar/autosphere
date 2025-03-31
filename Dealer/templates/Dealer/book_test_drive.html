@@ -3,26 +3,651 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Test Drive</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | Book Test Drive</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+             :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        .navbar {
+        background: white;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--dark);
+        text-decoration: none;
+    }
+
+    .logo i {
+        color: #3563E9;
+        font-size: 28px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    .nav-links a i {
+        font-size: 16px;
+    }
+
+    .user-menu {
+        position: relative;
+    }
+
+    .user-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--light);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--dark);
+        transition: all 0.3s;
+    }
+
+    .user-button:hover {
+        background: var(--light-gray);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 8px;
+        min-width: 200px;
+        display: none;
+    }
+
+    .user-menu:hover .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        color: var(--dark);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+
+    .user-dropdown a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    @media (max-width: 1200px) {
+        .nav-links a span {
+            display: none;
+        }
+
+        .nav-links {
+            gap: 15px;
+        }
+
+        .nav-links a {
+            padding: 8px;
+        }
+
+        .nav-links a i {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .user-button span {
+            display: none;
+        }
+    }
+    /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Keep your existing root styles and add: */
+
+        .booking-container {
+            max-width: 800px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--gray);
+        }
+
+        .vehicle-preview {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .vehicle-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .vehicle-info h3 {
+            font-size: 20px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .vehicle-info p {
+            color: var(--gray);
+            margin: 0;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            padding: 10px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .time-slot.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .booking-summary {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .summary-item:last-child {
+            border: none;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(53, 99, 233, 0.2);
+        }
+
+        .calendar-wrapper {
+            position: relative;
+        }
+
+        .calendar-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .booking-card {
+                padding: 20px;
+            }
+
+            .vehicle-preview {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .vehicle-image {
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2 class="text-center">Book Test Drive for {{ vehicle.brand }} - {{ vehicle.model }}</h2>
-        <div class="card p-4 mt-3">
-            <form method="post">
+    <!-- Add your navbar here -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'Dealer:Dealer_home' %}" class="logo">
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'Dealer:dealer_dashboard' %}">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicle_list' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Buy Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:add_vehicle' %}">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicles' %}">
+                        <i class="fas fa-car"></i>
+                        My Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_bookings' %}">
+                        <i class="fas fa-calendar-check"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:Dealer_booked_vehicel' %}">
+                        <i class="fas fa-bookmark"></i>
+                        Booked Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_profile' %}">
+                        <i class="fas fa-user-circle"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Customer:index' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="booking-container">
+        <div class="page-header">
+            <h2>Book a Test Drive</h2>
+            <p>Schedule your test drive for {{ vehicle.brand }} {{ vehicle.model }}</p>
+        </div>
+
+        <div class="vehicle-preview">
+            <div class="vehicle-image">
+                {% if vehicle.image %}
+                    <img src="{{ vehicle.image.url }}" alt="{{ vehicle.brand }} {{ vehicle.model }}">
+                {% else %}
+                    <div class="no-image">
+                        <i class="fas fa-car fa-3x"></i>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="vehicle-info">
+                <h3>{{ vehicle.brand }} {{ vehicle.model }}</h3>
+                <p>{{ vehicle.year }} • {{ vehicle.transmission }} • {{ vehicle.fuel_type }}</p>
+                <p class="price">₹{{ vehicle.price }} Lakh</p>
+            </div>
+        </div>
+
+        <div class="booking-card">
+            <form method="post" id="bookingForm">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="date" class="form-label">Select Date:</label>
-                    <input type="date" id="date" name="date" class="form-control" required>
+
+                <div class="form-group">
+                    <label class="form-label">Select Date</label>
+                    <div class="calendar-wrapper">
+                        <input type="date" name="date" class="form-control" required min="{{ current_date|date:'Y-m-d' }}">
+                        <i class="fas fa-calendar calendar-icon"></i>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="time" class="form-label">Select Time:</label>
-                    <input type="time" id="time" name="time" class="form-control" required>
+
+                <div class="form-group">
+                    <label class="form-label">Select Time</label>
+                    <div class="time-slots">
+                        <div class="time-slot" data-time="10:00">10:00 AM</div>
+                        <div class="time-slot" data-time="11:00">11:00 AM</div>
+                        <div class="time-slot" data-time="12:00">12:00 PM</div>
+                        <div class="time-slot" data-time="14:00">2:00 PM</div>
+                        <div class="time-slot" data-time="15:00">3:00 PM</div>
+                        <div class="time-slot" data-time="16:00">4:00 PM</div>
+                    </div>
+                    <input type="hidden" name="time" id="selectedTime" required>
                 </div>
-                <button type="submit" class="btn btn-success">Confirm Booking</button>
+
+                <div class="booking-summary">
+                    <h4>Booking Summary</h4>
+                    <div class="summary-item">
+                        <span>Vehicle</span>
+                        <span>{{ vehicle.brand }} {{ vehicle.model }}</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Date</span>
+                        <span id="selectedDate">Not selected</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Time</span>
+                        <span id="selectedTimeDisplay">Not selected</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-calendar-check"></i>
+                    Confirm Test Drive
+                </button>
             </form>
         </div>
     </div>
+
+    <!-- Add your footer here -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-links">
+                <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                <p>Your trusted platform for buying, selling, and renting vehicles.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'Dealer:dealer_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'Dealer:add_vehicle' %}">Add Vehicle</a></li>
+                    <li><a href="{% url 'Dealer:dealer_vehicles' %}">My Vehicles</a></li>
+                    <li><a href="{% url 'Dealer:dealer_bookings' %}">Bookings</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Set minimum date to today
+        const dateInput = document.querySelector('input[type="date"]');
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+        // Time slot selection
+        const timeSlots = document.querySelectorAll('.time-slot');
+        const selectedTimeInput = document.getElementById('selectedTime');
+        const selectedTimeDisplay = document.getElementById('selectedTimeDisplay');
+
+        timeSlots.forEach(slot => {
+            slot.addEventListener('click', function() {
+                timeSlots.forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedTimeInput.value = this.dataset.time;
+                selectedTimeDisplay.textContent = this.textContent;
+            });
+        });
+
+        // Update summary
+        dateInput.addEventListener('change', function() {
+            const date = new Date(this.value);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('selectedDate').textContent = date.toLocaleDateString('en-US', options);
+        });
+
+        // Form validation
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            if (!selectedTimeInput.value) {
+                e.preventDefault();
+                alert('Please select a time slot');
+            }
+        });
+    </script>
 </body>
 </html>

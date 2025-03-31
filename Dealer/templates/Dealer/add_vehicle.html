@@ -3,56 +3,727 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vehicle</title>
+    <title>AutoSphere | Add Vehicle</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Keep your existing root and basic styles */
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        .navbar {
+        background: white;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--dark);
+        text-decoration: none;
+    }
+
+    .logo i {
+        color: #3563E9;
+        font-size: 28px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    .nav-links a i {
+        font-size: 16px;
+    }
+
+    .user-menu {
+        position: relative;
+    }
+
+    .user-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--light);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--dark);
+        transition: all 0.3s;
+    }
+
+    .user-button:hover {
+        background: var(--light-gray);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 8px;
+        min-width: 200px;
+        display: none;
+    }
+
+    .user-menu:hover .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        color: var(--dark);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+
+    .user-dropdown a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    @media (max-width: 1200px) {
+        .nav-links a span {
+            display: none;
+        }
+
+        .nav-links {
+            gap: 15px;
+        }
+
+        .nav-links a {
+            padding: 8px;
+        }
+
+        .nav-links a i {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .user-button span {
+            display: none;
+        }
+    }
+    /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        .add-vehicle-container {
+            max-width: 900px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23718096' viewBox='0 0 16 16'%3E%3Cpath d='M8 10l4-4H4l4 4z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .file-upload {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            border: 2px dashed var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            justify-content: center;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
+
+        .file-preview {
+            display: none;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .file-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-divider {
+            grid-column: 1 / -1;
+            height: 1px;
+            background: var(--light-gray);
+            margin: 20px 0;
+        }
+
+        .form-submit {
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(53, 99, 233, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Add a Vehicle for Sale or Rent</h2>
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label>Title:</label>
-        <input type="text" name="title" required><br>
+    <!-- Add your navbar here -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'Dealer:Dealer_home' %}" class="logo">
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'Dealer:dealer_dashboard' %}">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicle_list' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Buy Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:add_vehicle' %}">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicles' %}">
+                        <i class="fas fa-car"></i>
+                        My Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_bookings' %}">
+                        <i class="fas fa-calendar-check"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:Dealer_booked_vehicel' %}">
+                        <i class="fas fa-bookmark"></i>
+                        Booked Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_profile' %}">
+                        <i class="fas fa-user-circle"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Customer:index' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-        <label>Brand:</label>
-        <input type="text" name="brand" required><br>
+    <div class="add-vehicle-container">
+        <div class="form-card">
+            <div class="page-title">
+                <h2>Add New Vehicle</h2>
+                <p>Add your vehicle details for sale or rent</p>
+            </div>
 
-        <label>Model:</label>
-        <input type="text" name="model" required><br>
+            <form id="addVehicleForm" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Title</label>
+                        <input type="text" name="title" class="form-control" placeholder="Enter vehicle title" required>
+                        <div class="error-message" id="titleError"></div>
+                    </div>
 
-        <label>Year:</label>
-        <input type="number" name="year" min="1900" max="2100" required><br>
+                    <div class="form-group">
+                        <label class="form-label">Vehicle Type</label>
+                        <select name="vehicle_type" class="form-control" required>
+                            <option value="">Select type</option>
+                            <option value="sale">For Sale</option>
+                            <option value="rent">For Rent</option>
+                        </select>
+                        <div class="error-message" id="typeError"></div>
+                    </div>
 
-        <label>Price:</label>
-        <input type="number" name="price" step="0.01" required><br>
+                    <div class="form-group">
+                        <label class="form-label">Brand</label>
+                        <input type="text" name="brand" class="form-control" placeholder="Enter brand name" required>
+                        <div class="error-message" id="brandError"></div>
+                    </div>
 
-        <label>Vehicle Type:</label>
-        <select name="vehicle_type">
-            <option value="sale">For Sale</option>
-            <option value="rent">For Rent</option>
-        </select><br>
+                    <div class="form-group">
+                        <label class="form-label">Model</label>
+                        <input type="text" name="model" class="form-control" placeholder="Enter model name" required>
+                        <div class="error-message" id="modelError"></div>
+                    </div>
 
-        <label>Description:</label>
-        <textarea name="description" required></textarea><br>
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
+                        <input type="number" name="year" class="form-control" min="1900" max="2100" required>
+                        <div class="error-message" id="yearError"></div>
+                    </div>
 
-        <label>Mileage (Optional):</label>
-        <input type="number" name="mileage"><br>
+                    <div class="form-group">
+                        <label class="form-label">Price</label>
+                        <input type="number" name="price" class="form-control" step="0.01" placeholder="Enter price" required>
+                        <div class="error-message" id="priceError"></div>
+                    </div>
 
-        <label>Fuel Type:</label>
-        <select name="fuel_type">
-            <option value="Petrol">Petrol</option>
-            <option value="Diesel">Diesel</option>
-            <option value="Electric">Electric</option>
-        </select><br>
+                    <div class="form-group">
+                        <label class="form-label">Fuel Type</label>
+                        <select name="fuel_type" class="form-control" required>
+                            <option value="">Select fuel type</option>
+                            <option value="Petrol">Petrol</option>
+                            <option value="Diesel">Diesel</option>
+                            <option value="Electric">Electric</option>
+                        </select>
+                        <div class="error-message" id="fuelError"></div>
+                    </div>
 
-        <label>Transmission:</label>
-        <select name="transmission">
-            <option value="Manual">Manual</option>
-            <option value="Automatic">Automatic</option>
-        </select><br>
+                    <div class="form-group">
+                        <label class="form-label">Transmission</label>
+                        <select name="transmission" class="form-control" required>
+                            <option value="">Select transmission</option>
+                            <option value="Manual">Manual</option>
+                            <option value="Automatic">Automatic</option>
+                        </select>
+                        <div class="error-message" id="transmissionError"></div>
+                    </div>
 
-        <label>Vehicle Image:</label>
-        <input type="file" name="image"><br>
+                    <div class="form-group">
+                        <label class="form-label">Mileage (Optional)</label>
+                        <input type="number" name="mileage" class="form-control" placeholder="Enter mileage">
+                        <div class="error-message" id="mileageError"></div>
+                    </div>
 
-        <button type="submit">Add Vehicle</button>
-    </form>
+                    <div class="form-group full-width">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" placeholder="Enter vehicle description" required></textarea>
+                        <div class="error-message" id="descriptionError"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <div class="file-upload">
+                            <label class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                                <div>
+                                    <h4>Drop your vehicle image here</h4>
+                                    <p>or click to browse</p>
+                                </div>
+                                <input type="file" name="image" accept="image/*" required>
+                            </label>
+                            <div class="file-preview" id="imagePreview"></div>
+                            <div class="error-message" id="imageError"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-submit">
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-plus-circle"></i>
+                            Add Vehicle
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-links">
+                <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                <p>Your trusted platform for buying, selling, and renting vehicles.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'Dealer:dealer_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'Dealer:add_vehicle' %}">Add Vehicle</a></li>
+                    <li><a href="{% url 'Dealer:dealer_vehicles' %}">My Vehicles</a></li>
+                    <li><a href="{% url 'Dealer:dealer_bookings' %}">Bookings</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Add your footer here -->
+
+    <script>
+        document.getElementById('addVehicleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.classList.remove('error');
+            });
+
+            let isValid = true;
+
+            // Validate Title
+            const title = document.querySelector('[name="title"]').value.trim();
+            if (title.length < 5) {
+                showError('title', 'Title must be at least 5 characters long');
+                isValid = false;
+            }
+
+            // Validate Year
+            const year = document.querySelector('[name="year"]').value;
+            const currentYear = new Date().getFullYear();
+            if (year < 1900 || year > currentYear + 1) {
+                showError('year', `Year must be between 1900 and ${currentYear + 1}`);
+                isValid = false;
+            }
+
+            // Validate Price
+            const price = document.querySelector('[name="price"]').value;
+            if (price <= 0) {
+                showError('price', 'Price must be greater than 0');
+                isValid = false;
+            }
+
+            // Validate Description
+            const description = document.querySelector('[name="description"]').value.trim();
+            if (description.length < 50) {
+                showError('description', 'Description must be at least 50 characters long');
+                isValid = false;
+            }
+
+            // Validate Image
+            const imageInput = document.querySelector('[name="image"]');
+            if (imageInput.files.length > 0) {
+                const file = imageInput.files[0];
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+
+                if (!validTypes.includes(file.type)) {
+                    showError('image', 'Please upload a valid image file (JPEG, PNG)');
+                    isValid = false;
+                }
+
+                if (file.size > maxSize) {
+                    showError('image', 'Image size should be less than 5MB');
+                    isValid = false;
+                }
+            }
+
+            if (isValid) {
+                this.submit();
+            }
+        });
+
+        function showError(fieldName, message) {
+            const errorElement = document.getElementById(fieldName + 'Error');
+            const inputElement = document.querySelector(`[name="${fieldName}"]`);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            inputElement.classList.add('error');
+        }
+
+        // Image preview
+        document.querySelector('[name="image"]').addEventListener('change', function(e) {
+            const preview = document.getElementById('imagePreview');
+            const file = e.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

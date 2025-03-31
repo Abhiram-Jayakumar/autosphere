@@ -527,6 +527,7 @@ def dealer_dashboard(request):
         "total_rental_earnings": total_rental_earnings,
         "total_value_of_added_vehicles": total_value_of_added_vehicles,
         "total_profit": total_profit,
+        "dealer": dealer,
     }
 
     return render(request, "Dealer/dealer_dashboard.html", context)

@@ -3,116 +3,742 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dealer Bookings</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | Dealer Bookings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+             :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        .navbar {
+        background: white;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--dark);
+        text-decoration: none;
+    }
+
+    .logo i {
+        color: #3563E9;
+        font-size: 28px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    .nav-links a i {
+        font-size: 16px;
+    }
+
+    .user-menu {
+        position: relative;
+    }
+
+    .user-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--light);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--dark);
+        transition: all 0.3s;
+    }
+
+    .user-button:hover {
+        background: var(--light-gray);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 8px;
+        min-width: 200px;
+        display: none;
+    }
+
+    .user-menu:hover .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        color: var(--dark);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+
+    .user-dropdown a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    @media (max-width: 1200px) {
+        .nav-links a span {
+            display: none;
+        }
+
+        .nav-links {
+            gap: 15px;
+        }
+
+        .nav-links a {
+            padding: 8px;
+        }
+
+        .nav-links a i {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .user-button span {
+            display: none;
+        }
+    }
+    /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        .bookings-container {
+            max-width: 1400px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .booking-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--light-gray);
+            padding-bottom: 10px;
+        }
+
+        .tab-button {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            font-weight: 600;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-button::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+        }
+
+        .tab-button.active::after {
+            transform: scaleX(1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .booking-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .booking-table th {
+            background: var(--light);
+            color: var(--dark);
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .booking-table td {
+            padding: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            color: var(--gray);
+        }
+
+        .booking-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: var(--warning);
+            color: white;
+        }
+
+        .badge-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .badge-error {
+            background: var(--error);
+            color: white;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-approve {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-reject {
+            background: var(--error);
+            color: white;
+        }
+
+        .btn-contact {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .alert-success {
+            background: #DEF7EC;
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: #FED7D7;
+            color: var(--error);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .booking-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h2 class="text-center">Dealer Bookings</h2>
+    <!-- Add your navbar here -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'Dealer:Dealer_home' %}" class="logo">
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'Dealer:dealer_dashboard' %}">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicle_list' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Buy Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:add_vehicle' %}">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicles' %}">
+                        <i class="fas fa-car"></i>
+                        My Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_bookings' %}">
+                        <i class="fas fa-calendar-check"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:Dealer_booked_vehicel' %}">
+                        <i class="fas fa-bookmark"></i>
+                        Booked Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_profile' %}">
+                        <i class="fas fa-user-circle"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Customer:index' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-        <!-- Success & Error Messages -->
+    <div class="bookings-container">
+        <div class="page-header">
+            <h2>Booking Management</h2>
+        </div>
+
         {% if messages %}
-        <div class="alert alert-dismissible fade show">
+        <div class="alerts">
             {% for message in messages %}
-                <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %}">
-                    {{ message }}
-                </div>
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-error{% endif %}">
+                <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
+                {{ message }}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
 
-        <!-- Test Drive Bookings -->
-        <h3 class="mt-4">Test Drive Bookings</h3>
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>Customer</th>
-                    <th>Vehicle</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                    <th>IS intrested or not</th>
-                    <th>paid amount</th>
-                    <th>Payment Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in test_drives %}
-                <tr>
-                    <td>{{ booking.customer.name }}</td>
-                    <td>{{ booking.vehicle.brand }} - {{ booking.vehicle.model }}</td>
-                    <td>{{ booking.date }}</td>
-                    <td>{{ booking.time }}</td>
-                    <td>
-                        <strong>{{ booking.status }}</strong>
-                        {% if booking.Contancted == "Contacted" %}
-                            <span class="badge bg-success">Contacted</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if booking.status == "Pending" %}
-                            <a href="{% url 'Dealer:approve_dealer_booking' 'test_drive' booking.id %}" class="btn btn-success btn-sm">Approve</a>
-                            <a href="{% url 'Dealer:reject_dealer_booking' 'test_drive' booking.id %}" class="btn btn-danger btn-sm">Reject</a>
-                        {% elif booking.status == "Accepted" and booking.Contancted == "Pending" %}
-                            <a href="{% url 'Dealer:mark_as_contacted' booking.id %}" class="btn btn-info btn-sm">Mark as Contacted</a>
-                        {% else %}
-                            <span class="badge bg-secondary">{{ booking.status }}</span>
-                        {% endif %}
-                    </td>
-                    <td>{{booking.Intrested}}</td>
-                    <td>{{booking.Payment_amount}}</td>
-                    <td>{{booking.payment_status}}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="6" class="text-center">No test drive bookings found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="booking-tabs">
+            <button class="tab-button active" onclick="showTab('test-drives')">
+                <i class="fas fa-car"></i>
+                Test Drive Bookings
+            </button>
+            <button class="tab-button" onclick="showTab('rentals')">
+                <i class="fas fa-key"></i>
+                Rental Bookings
+            </button>
+        </div>
 
-        <!-- Rental Bookings -->
-        <h3 class="mt-4">Rental Bookings</h3>
-        <table class="table table-bordered">
-            <thead class="table-dark">
-                <tr>
-                    <th>Customer</th>
-                    <th>Vehicle</th>
-                    <th>Rental Date</th>
-                    <th>Return Date</th>
-                    <th>Accessories</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                    <th>Payment Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for booking in rentals %}
-                <tr>
-                    <td>{{ booking.customer.name }}</td>
-                    <td>{{ booking.vehicle.brand }} - {{ booking.vehicle.model }}</td>
-                    <td>{{ booking.rental_date }}</td>
-                    <td>{{ booking.return_date }}</td>
-                    <td>{{ booking.accessories_needed|default:"None" }}</td>
-                    <td><strong>{{ booking.status }}</strong></td>
-                    <td>
-                        {% if booking.status == "Pending" %}
-                            <a href="{% url 'Dealer:approve_dealer_booking' 'rental' booking.id %}" class="btn btn-success btn-sm">Approve</a>
-                            <a href="{% url 'Dealer:reject_dealer_booking' 'rental' booking.id %}" class="btn btn-danger btn-sm">Reject</a>
-                        {% else %}
-                            <span class="badge bg-secondary">{{ booking.status }}</span>
-                        {% endif %}
-                    </td>
-                    <td>{{booking.payment_status}}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7" class="text-center">No rental bookings found.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div id="test-drives" class="tab-content active">
+            <div class="booking-card">
+                <table class="booking-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th>Interest</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in test_drives %}
+                        <tr>
+                            <td>
+                                <div style="font-weight: 600; color: var(--dark);">{{ booking.customer.name }}</div>
+                            </td>
+                            <td>
+                                <div style="font-weight: 600; color: var(--dark);">{{ booking.vehicle.brand }}</div>
+                                <div style="font-size: 14px;">{{ booking.vehicle.model }}</div>
+                            </td>
+                            <td>
+                                <div>{{ booking.date }}</div>
+                                <div style="font-size: 14px;">{{ booking.time }}</div>
+                            </td>
+                            <td>
+                                <span class="badge {% if booking.status == 'Pending' %}badge-pending{% elif booking.status == 'Accepted' %}badge-success{% else %}badge-error{% endif %}" style="color: #1A202C;">
+                                    {{ booking.status }}
+                                </span>
+                                {% if booking.Contancted == "Contacted" %}
+                                <span class="badge badge-success" >Contacted</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge {% if booking.Intrested == 'Yes' %}badge-success{% elif booking.Intrested == 'No' %}badge-error{% else %}badge-pending{% endif %}" style="color: #1A202C;">
+                                    {{ booking.Intrested }}
+                                </span>
+                            </td>
+                            <td>
+                                <div>₹{{ booking.Payment_amount }}</div>
+                                <div class="badge {% if booking.payment_status == 'Paid' %}badge-success{% else %}badge-pending{% endif %}">
+                                    {{ booking.payment_status }}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    {% if booking.status == "Pending" %}
+                                    <a href="{% url 'Dealer:approve_dealer_booking' 'test_drive' booking.id %}" class="btn btn-approve">
+                                        <i class="fas fa-check"></i>
+                                        Approve
+                                    </a>
+                                    <a href="{% url 'Dealer:reject_dealer_booking' 'test_drive' booking.id %}" class="btn btn-reject">
+                                        <i class="fas fa-times"></i>
+                                        Reject
+                                    </a>
+                                    {% elif booking.status == "Accepted" and booking.Contancted == "Pending" %}
+                                    <a href="{% url 'Dealer:mark_as_contacted' booking.id %}" class="btn btn-contact">
+                                        <i class="fas fa-phone"></i>
+                                        Mark Contacted
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="fas fa-calendar-times"></i>
+                                <h3>No Test Drive Bookings</h3>
+                                <p>There are no test drive bookings at the moment.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="rentals" class="tab-content">
+            <div class="booking-card">
+                <table class="booking-table">
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Vehicle</th>
+                            <th>Rental Period</th>
+                            <th>Accessories</th>
+                            <th>Status</th>
+                            <th>Payment</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in rentals %}
+                        <tr>
+                            <td>
+                                <div style="font-weight: 600; color: var(--dark);">{{ booking.customer.name }}</div>
+                            </td>
+                            <td>
+                                <div style="font-weight: 600; color: var(--dark);">{{ booking.vehicle.brand }}</div>
+                                <div style="font-size: 14px;">{{ booking.vehicle.model }}</div>
+                            </td>
+                            <td>
+                                <div>From: {{ booking.rental_date }}</div>
+                                <div>To: {{ booking.return_date }}</div>
+                            </td>
+                            <td>{{ booking.accessories_needed|default:"None" }}</td>
+                            <td>
+                                <span class="badge {% if booking.status == 'Pending' %}badge-pending{% elif booking.status == 'Accepted' %}badge-success{% else %}badge-error{% endif %}">
+                                    {{ booking.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {% if booking.payment_status == 'Paid' %}badge-success{% else %}badge-pending{% endif %}">
+                                    {{ booking.payment_status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    {% if booking.status == "Pending" %}
+                                    <a href="{% url 'Dealer:approve_dealer_booking' 'rental' booking.id %}" class="btn btn-approve">
+                                        <i class="fas fa-check"></i>
+                                        Approve
+                                    </a>
+                                    <a href="{% url 'Dealer:reject_dealer_booking' 'rental' booking.id %}" class="btn btn-reject">
+                                        <i class="fas fa-times"></i>
+                                        Reject
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                <i class="fas fa-car-side"></i>
+                                <h3>No Rental Bookings</h3>
+                                <p>There are no rental bookings at the moment.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
+
+    <!-- Add your footer here -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-links">
+                <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                <p>Your trusted platform for buying, selling, and renting vehicles.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'Dealer:dealer_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'Dealer:add_vehicle' %}">Add Vehicle</a></li>
+                    <li><a href="{% url 'Dealer:dealer_vehicles' %}">My Vehicles</a></li>
+                    <li><a href="{% url 'Dealer:dealer_bookings' %}">Bookings</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Add active class to clicked button
+            event.currentTarget.classList.add('active');
+        }
+    </script>
 </body>
 </html>

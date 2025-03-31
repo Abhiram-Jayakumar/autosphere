@@ -3,119 +3,688 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vehicle Features - AutoSphere</title>
+    <title>AutoSphere | Add Vehicle Features</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
         }
-        h2 {
-            text-align: center;
-            color: #333;
+        .navbar {
+        background: white;
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 0px;
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--dark);
+        text-decoration: none;
+    }
+
+    .logo i {
+        color: #3563E9;
+        font-size: 28px;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        gap: 1px;
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: 500;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .nav-links a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    .nav-links a i {
+        font-size: 16px;
+    }
+
+    .user-menu {
+        position: relative;
+    }
+
+    .user-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: var(--light);
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        color: var(--dark);
+        transition: all 0.3s;
+    }
+
+    .user-button:hover {
+        background: var(--light-gray);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 10px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        padding: 8px;
+        min-width: 200px;
+        display: none;
+    }
+
+    .user-menu:hover .user-dropdown {
+        display: block;
+    }
+
+    .user-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 16px;
+        color: var(--dark);
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+
+    .user-dropdown a:hover {
+        background: var(--light);
+        color: var(--primary);
+    }
+
+    @media (max-width: 1200px) {
+        .nav-links a span {
+            display: none;
         }
-        form {
-            display: flex;
-            flex-direction: column;
+
+        .nav-links {
+            gap: 15px;
         }
-        label {
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        input, textarea, select {
+
+        .nav-links a {
             padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
         }
+
+        .nav-links a i {
+            font-size: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .nav-links {
+            display: none;
+        }
+
+        .user-button span {
+            display: none;
+        }
+    }
+    /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .footer-links h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        .features-container {
+            max-width: 900px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--gray);
+        }
+
+        .features-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+        }
+
+        .form-sections {
+            display: grid;
+            gap: 40px;
+        }
+
+        .form-section {
+            background: var(--light);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23718096' viewBox='0 0 16 16'%3E%3Cpath d='M8 10l4-4H4l4 4z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 40px;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
         .checkbox-group {
             display: flex;
+            align-items: center;
             gap: 10px;
-            margin-top: 10px;
+            margin-bottom: 15px;
         }
-        .btn {
-            margin-top: 15px;
-            padding: 10px;
-            text-align: center;
-            color: white;
-            background-color: #28a745;
-            border-radius: 5px;
-            text-decoration: none;
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: 4px;
             cursor: pointer;
         }
+
+        .checkbox-group label {
+            color: var(--dark);
+            cursor: pointer;
+        }
+
+        .form-actions {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-save {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
         .btn:hover {
-            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-card {
+                padding: 20px;
+            }
+
+            .form-actions {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Add your navbar here -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="{% url 'Dealer:Dealer_home' %}" class="logo">
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'Dealer:dealer_dashboard' %}">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicle_list' %}">
+                        <i class="fas fa-shopping-cart"></i>
+                        Buy Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:add_vehicle' %}">
+                        <i class="fas fa-plus-circle"></i>
+                        Add Vehicle
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_vehicles' %}">
+                        <i class="fas fa-car"></i>
+                        My Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_bookings' %}">
+                        <i class="fas fa-calendar-check"></i>
+                        Bookings
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:Dealer_booked_vehicel' %}">
+                        <i class="fas fa-bookmark"></i>
+                        Booked Vehicles
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Dealer:dealer_profile' %}">
+                        <i class="fas fa-user-circle"></i>
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'Customer:index' %}">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-    <div class="container">
-        <h2>Add Features for {{ vehicle.brand }} {{ vehicle.model }}</h2>
-        <form method="POST">
-            {% csrf_token %}
+    <div class="features-container">
+        <div class="page-header">
+            <h2>Add Vehicle Features</h2>
+            <p>Enhance your listing for {{ vehicle.brand }} {{ vehicle.model }}</p>
+        </div>
 
-            <label>Previous Owners:</label>
-            <input type="number" name="previous_owners" min="0" required>
+        <div class="features-card">
+            <form method="POST" id="featuresForm">
+                {% csrf_token %}
+                
+                <div class="form-sections">
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Basic Information
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Previous Owners</label>
+                                <input type="number" name="previous_owners" min="0" class="form-control" required>
+                            </div>
 
-            <label>Condition:</label>
-            <select name="condition" required>
-                <option value="New">New</option>
-                <option value="Used">Used</option>
-            </select>
+                            <div class="form-group">
+                                <label class="form-label">Condition</label>
+                                <select name="condition" class="form-control" required>
+                                    <option value="">Select condition</option>
+                                    <option value="New">New</option>
+                                    <option value="Used">Used</option>
+                                </select>
+                            </div>
 
-            <label>Color:</label>
-            <input type="text" name="color" required>
+                            <div class="form-group">
+                                <label class="form-label">Color</label>
+                                <input type="text" name="color" class="form-control" required>
+                            </div>
 
-            <label>Seating Capacity:</label>
-            <input type="number" name="seating_capacity" min="1" required>
+                            <div class="form-group">
+                                <label class="form-label">Seating Capacity</label>
+                                <input type="number" name="seating_capacity" min="1" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
 
-            <label>Engine Capacity (cc):</label>
-            <input type="text" name="engine_capacity">
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-cogs"></i>
+                            Technical Specifications
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Engine Capacity (cc)</label>
+                                <input type="text" name="engine_capacity" class="form-control">
+                            </div>
 
-            <label>Fuel Tank Capacity (L):</label>
-            <input type="number" name="fuel_tank_capacity">
+                            <div class="form-group">
+                                <label class="form-label">Fuel Tank Capacity (L)</label>
+                                <input type="number" name="fuel_tank_capacity" class="form-control">
+                            </div>
 
-            <label>Additional Features (comma-separated):</label>
-            <textarea name="features"></textarea>
+                            <div class="form-group">
+                                <label class="form-label">Safety Rating</label>
+                                <input type="number" name="safety_rating" min="1" max="5" step="0.1" class="form-control">
+                            </div>
+                        </div>
+                    </div>
 
-            <label>Safety Rating (1.0 - 5.0):</label>
-            <input type="number" name="safety_rating" min="1" max="5" step="0.1">
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-plus-circle"></i>
+                            Additional Features
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label">Features (comma-separated)</label>
+                            <textarea name="features" class="form-control" placeholder="Example: Air Conditioning, Power Steering, ABS"></textarea>
+                        </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" name="gps_enabled" id="gps_enabled">
-                <label for="gps_enabled">GPS Enabled</label>
-            </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="gps_enabled" id="gps_enabled">
+                            <label for="gps_enabled">GPS Navigation System</label>
+                        </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" name="bluetooth_connectivity" id="bluetooth_connectivity">
-                <label for="bluetooth_connectivity">Bluetooth Connectivity</label>
-            </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="bluetooth_connectivity" id="bluetooth_connectivity">
+                            <label for="bluetooth_connectivity">Bluetooth Connectivity</label>
+                        </div>
+                    </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" name="negotiable" id="negotiable" checked>
-                <label for="negotiable">Price Negotiable</label>
-            </div>
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-shield-alt"></i>
+                            Warranty & Insurance
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Insurance Valid Till</label>
+                                <input type="date" name="insurance_valid_till" class="form-control">
+                            </div>
 
-            <label>Insurance Valid Till:</label>
-            <input type="date" name="insurance_valid_till">
+                            <div class="form-group">
+                                <div class="checkbox-group" style="margin-top: 32px;">
+                                    <input type="checkbox" name="warranty_available" id="warranty_available">
+                                    <label for="warranty_available">Warranty Available</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="checkbox-group">
-                <input type="checkbox" name="warranty_available" id="warranty_available">
-                <label for="warranty_available">Warranty Available</label>
-            </div>
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-tags"></i>
+                            Pricing Options
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" name="negotiable" id="negotiable" checked>
+                            <label for="negotiable">Price is Negotiable</label>
+                        </div>
+                    </div>
+                </div>
 
-            <button type="submit" class="btn">Save Features</button>
-        </form>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-save">
+                        <i class="fas fa-save"></i>
+                        Save Features
+                    </button>
+                    <a href="{% url 'Dealer:dealer_vehicles' %}" class="btn btn-cancel">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
     </div>
 
+    <!-- Add your footer here -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-links">
+                <a href="#" class="footer-logo">Auto<span>Sphere</span></a>
+                <p>Your trusted platform for buying, selling, and renting vehicles.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{% url 'Dealer:dealer_dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'Dealer:add_vehicle' %}">Add Vehicle</a></li>
+                    <li><a href="{% url 'Dealer:dealer_vehicles' %}">My Vehicles</a></li>
+                    <li><a href="{% url 'Dealer:dealer_bookings' %}">Bookings</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Disclaimer</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AutoSphere. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form validation
+        document.getElementById('featuresForm').addEventListener('submit', function(e) {
+            const seatingCapacity = document.querySelector('input[name="seating_capacity"]').value;
+            const safetyRating = document.querySelector('input[name="safety_rating"]').value;
+            const previousOwners = document.querySelector('input[name="previous_owners"]').value;
+
+            if (seatingCapacity <= 0) {
+                e.preventDefault();
+                alert('Seating capacity must be greater than 0');
+            }
+
+            if (safetyRating < 1 || safetyRating > 5) {
+                e.preventDefault();
+                alert('Safety rating must be between 1 and 5');
+            }
+
+            if (previousOwners < 0) {
+                e.preventDefault();
+                alert('Previous owners cannot be negative');
+            }
+        });
+
+        // Set minimum date for insurance
+        const insuranceInput = document.querySelector('input[name="insurance_valid_till"]');
+        const today = new Date().toISOString().split('T')[0];
+        insuranceInput.min = today;
+    </script>
 </body>
 </html>
