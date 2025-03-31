@@ -1,34 +1,663 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Showroom Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoSphere | Showroom Registration</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .registration-container {
+            max-width: 800px;
+            margin: 100px auto 40px;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .registration-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .password-requirements {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .requirement i {
+            font-size: 12px;
+        }
+
+        .requirement.valid {
+            color: var(--success);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .file-upload {
+            position: relative;
+        }
+
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border: 2px dashed var(--light-gray);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-label:hover {
+            border-color: var(--primary);
+            background: var(--light);
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .image-preview img {
+            max-width: 200px;
+            border-radius: 8px;
+        }
+
+        .submit-button {
+            background: var(--primary);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer {
+            background: var(--secondary);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-card {
+                padding: 20px;
+            }
+        } /* Navbar Styles */
+         .navbar {
+            background: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+    </style>
 </head>
 <body>
-    <h2>Showroom Registration</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <label>Name:</label>
-        <input type="text" name="name" required><br>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="#" class="logo"><span style="color: #3563E9;">Auto</span><span>Sphere</span></a>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Buy</a></li>
+                    <li><a href="#">Sell</a></li>
+                    <li><a href="#">Rent</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="{% url 'Customer:submit_complaint'%}">Complaint</a></li>
+                </ul>
+                <div>
+                    <a href="{% url 'Customer:Login'%}" class="btn btn-outline">Sign In</a>
+                    <a href="{% url 'Customer:registration'%}" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Registration Form -->
+    <div class="registration-container">
+        <div class="page-header">
+            <h2>Showroom Registration</h2>
+            <p>Join our network of premium showrooms</p>
+        </div>
+
+        <div class="registration-card">
+            <form id="registrationForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-building"></i>
+                            Showroom Name
+                        </label>
+                        <input type="text" name="name" class="form-control" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-envelope"></i>
+                            Email Address
+                        </label>
+                        <input type="email" name="email" class="form-control" required>
+                        <div class="error-message" id="emailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-phone"></i>
+                            Phone Number
+                        </label>
+                        <input type="text" name="phone" class="form-control" required>
+                        <div class="error-message" id="phoneError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-id-card"></i>
+                            ID Proof Number
+                        </label>
+                        <input type="text" name="id_proof_number" class="form-control" required>
+                        <div class="error-message" id="idProofError"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fas fa-lock"></i>
+                            Password
+                        </label>
+                        <div class="password-wrapper">
+                            <input type="password" name="password" class="form-control" required>
+                            <i class="fas fa-eye password-toggle"></i>
+                        </div>
+                        <div class="error-message" id="passwordError"></div>
+                        <div class="password-requirements">
+                            <div class="requirement" data-requirement="length">
+                                <i class="fas fa-circle"></i>
+                                At least 8 characters
+                            </div>
+                            <div class="requirement" data-requirement="uppercase">
+                                <i class="fas fa-circle"></i>
+                                One uppercase letter
+                            </div>
+                            <div class="requirement" data-requirement="lowercase">
+                                <i class="fas fa-circle"></i>
+                                One lowercase letter
+                            </div>
+                            <div class="requirement" data-requirement="number">
+                                <i class="fas fa-circle"></i>
+                                One number
+                            </div>
+                            <div class="requirement" data-requirement="special">
+                                <i class="fas fa-circle"></i>
+                                One special character
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Address
+                        </label>
+                        <textarea name="address" class="form-control" rows="4" required></textarea>
+                        <div class="error-message" id="addressError"></div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fas fa-image"></i>
+                            Profile Image
+                        </label>
+                        <div class="file-upload">
+                            <label class="file-upload-label">
+                                <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                                <div>
+                                    <h4>Drop your profile image here</h4>
+                                    <p>or click to browse</p>
+                                </div>
+                                <input type="file" name="profile_image_showroom" style="display: none;" accept="image/*">
+                            </label>
+                            <div class="image-preview"></div>
+                        </div>
+                        <div class="error-message" id="imageError"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-user-plus"></i>
+                    Register Showroom
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About AutoSphere</h3>
+                <p>Leading the digital transformation of automotive retail with innovative solutions for showrooms and dealers.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p>Email: info@autosphere.com</p>
+                <p>Phone: +1 234 567 890</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form validation
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Reset errors
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+
+            // Validate Name
+            const name = document.querySelector('input[name="name"]').value;
+            if (name.length < 3) {
+                showError('name', 'Showroom name must be at least 3 characters long');
+                isValid = false;
+            }
+
+            // Validate Email
+            const email = document.querySelector('input[name="email"]').value;
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Validate Phone
+            const phone = document.querySelector('input[name="phone"]').value;
+            if (!/^\d{10}$/.test(phone)) {
+                showError('phone', 'Please enter a valid 10-digit phone number');
+                isValid = false;
+            }
+
+            // Validate ID Proof
+            const idProof = document.querySelector('input[name="id_proof_number"]').value;
+            if (idProof.length < 8) {
+                showError('idProof', 'Please enter a valid ID proof number');
+                isValid = false;
+            }
+
+            // Validate Password
+            const password = document.querySelector('input[name="password"]').value;
+            if (password.length < 8) {
+                showError('password', 'Password must be at least 8 characters long');
+                isValid = false;
+            }
+            if (!/[A-Z]/.test(password)) {
+                showError('password', 'Password must contain at least one uppercase letter');
+                isValid = false;
+            }
+            if (!/[a-z]/.test(password)) {
+                showError('password', 'Password must contain at least one lowercase letter');
+                isValid = false;
+            }
+            if (!/[0-9]/.test(password)) {
+                showError('password', 'Password must contain at least one number');
+                isValid = false;
+            }
+            if (!/[^A-Za-z0-9]/.test(password)) {
+                showError('password', 'Password must contain at least one special character');
+                isValid = false;
+            }
+
+            // Validate Address
+            const address = document.querySelector('textarea[name="address"]').value;
+            if (address.length < 10) {
+                showError('address', 'Please enter a complete address');
+                isValid = false;
+            }
+
+            // Validate Image
+            const fileInput = document.querySelector('input[name="profile_image_showroom"]');
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+
+                if (!validTypes.includes(file.type)) {
+                    showError('image', 'Please upload only JPEG, PNG, or JPG images');
+                    isValid = false;
+                }
+
+                if (file.size > maxSize) {
+                    showError('image', 'File size should not exceed 5MB');
+                    isValid = false;
+                }
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + 'Error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        // Password visibility toggle
+        document.querySelector('.password-toggle').addEventListener('click', function() {
+            const passwordInput = document.querySelector('input[name="password"]');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                this.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                this.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+
+        // Password requirements check
+        document.querySelector('input[name="password"]').addEventListener('input', function() {
+            const password = this.value;
+            
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[^A-Za-z0-9]/.test(password)
+            };
+
+            Object.keys(requirements).forEach(key => {
+                const requirement = document.querySelector(`[data-requirement="${key}"]`);
+                if (requirements[key]) {
+                    requirement.classList.add('valid');
+                    requirement.querySelector('i').classList.replace('fa-circle', 'fa-check-circle');
+                } else {
+                    requirement.classList.remove('valid');
+                    requirement.querySelector('i').classList.replace('fa-check-circle', 'fa-circle');
+                }
+            });
+        });
+
+        // Image preview
+        const fileInput = document.querySelector('input[type="file"]');
+        const imagePreview = document.querySelector('.image-preview');
         
-        <label>Email:</label>
-        <input type="email" name="email" required><br>
-        
-        <label>Phone:</label>
-        <input type="text" name="phone" required><br>
-        
-        <label>Password:</label>
-        <input type="text" name="password" required><br>
-        
-        <label>ID Proof Number:</label>
-        <input type="text" name="id_proof_number" required><br>
-        
-        <label>Address:</label>
-        <textarea name="address" required></textarea><br>
-        
-        <label>Profile Image:</label>
-        <input type="file" name="profile_image_showroom"><br>
-        
-        <button type="submit">Register</button>
-    </form>
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.style.display = 'block';
+                    imagePreview.innerHTML = `<img src="${e.target.result}" alt="Profile Preview">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 </html>

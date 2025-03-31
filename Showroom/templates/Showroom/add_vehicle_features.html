@@ -3,85 +3,449 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vehicle Features</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>AutoSphere | Add Vehicle Features</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #1A365D;
+            --accent: #FF4C30;
+            --light: #F7FAFC;
+            --dark: #1A202C;
+            --gray: #718096;
+            --light-gray: #EDF2F7;
+            --success: #48BB78;
+            --error: #F56565;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Main Content */
+        .features-container {
+            max-width: 800px;
+            margin: 100px auto 40px;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h2 {
+            font-size: 32px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .features-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--light-gray);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(53, 99, 233, 0.1);
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 10px;
+        }
+
+        .checkbox-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .checkbox-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-label {
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .submit-button {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: auto;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checkbox-container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-card {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h2 class="text-center">Add Features for {{ vehicle.title }}</h2>
-        <form method="post" class="mt-3">
-            {% csrf_token %}
-
-            <div class="mb-3">
-                <label class="form-label">Condition:</label>
-                <select name="condition" class="form-control">
-                    <option value="New">New</option>
-                    <option value="Used">Used</option>
-                </select>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span style="color: #3563E9;">Auto</span><span style="color: #f35b5b;">Sphere</span>
             </div>
-
-            <div class="mb-3">
-                <label class="form-label">Previous Owners:</label>
-                <input type="number" name="previous_owners" class="form-control" min="0" value="1">
+            <div class="nav-links">
+                <a href="{% url 'Showroom:showroom_vehicles' %}" class="nav-link">
+                    <i class="fas fa-car"></i> Vehicles
+                </a>
+                <a href="{% url 'Showroom:showroom_bookings' %}" class="nav-link">
+                    <i class="fas fa-calendar"></i> Bookings
+                </a>
+                <a href="{% url 'Showroom:showroom_profile' %}" class="nav-link">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+                <a href="{% url 'Showroom:showroom_dashboard' %}" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="{% url 'Showroom:add_vehicle' %}" class="nav-link">
+                    <i class="fas fa-plus"></i> Add Vehicle
+                </a>
+                <a href="{% url 'Customer:index' %}" class="nav-link logout">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
             </div>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <div class="features-container">
+        <div class="page-header">
+            <h2>Add Features for {{ vehicle.title }}</h2>
+            <p>Enhance your vehicle listing with detailed features</p>
+        </div>
 
-            <div class="mb-3">
-                <label class="form-label">Color:</label>
-                <input type="text" name="color" class="form-control" placeholder="Enter vehicle color">
-            </div>
+        <div class="features-card">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-tag"></i>
+                            Condition
+                        </label>
+                        <select name="condition" class="form-control">
+                            <option value="New">New</option>
+                            <option value="Used">Used</option>
+                        </select>
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Seating Capacity:</label>
-                <input type="number" name="seating_capacity" class="form-control" min="1">
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-users"></i>
+                            Previous Owners
+                        </label>
+                        <input type="number" name="previous_owners" class="form-control" min="0" value="1">
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Engine Capacity (cc):</label>
-                <input type="text" name="engine_capacity" class="form-control" placeholder="e.g., 1498cc">
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-paint-brush"></i>
+                            Color
+                        </label>
+                        <input type="text" name="color" class="form-control" placeholder="Enter vehicle color">
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Fuel Tank Capacity (Liters):</label>
-                <input type="number" name="fuel_tank_capacity" class="form-control">
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-chair"></i>
+                            Seating Capacity
+                        </label>
+                        <input type="number" name="seating_capacity" class="form-control" min="1">
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Safety Rating (1-5):</label>
-                <input type="number" name="safety_rating" class="form-control" min="1" max="5" step="0.1">
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-engine"></i>
+                            Engine Capacity (cc)
+                        </label>
+                        <input type="text" name="engine_capacity" class="form-control" placeholder="e.g., 1498cc">
+                    </div>
 
-            <div class="mb-3">
-                <label class="form-label">Features (comma-separated):</label>
-                <textarea name="features" class="form-control" placeholder="e.g., Sunroof, ABS, Cruise Control"></textarea>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-gas-pump"></i>
+                            Fuel Tank Capacity (Liters)
+                        </label>
+                        <input type="number" name="fuel_tank_capacity" class="form-control">
+                    </div>
 
-            <div class="mb-3 form-check">
-                <input type="checkbox" name="gps_enabled" class="form-check-input">
-                <label class="form-check-label">GPS Enabled</label>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-shield-alt"></i>
+                            Safety Rating (1-5)
+                        </label>
+                        <input type="number" name="safety_rating" class="form-control" min="1" max="5" step="0.1">
+                    </div>
 
-            <div class="mb-3 form-check">
-                <input type="checkbox" name="bluetooth_connectivity" class="form-check-input">
-                <label class="form-check-label">Bluetooth Connectivity</label>
-            </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar"></i>
+                            Insurance Valid Till
+                        </label>
+                        <input type="date" name="insurance_valid_till" class="form-control">
+                    </div>
 
-            <div class="mb-3 form-check">
-                <input type="checkbox" name="negotiable" class="form-check-input" checked>
-                <label class="form-check-label">Price Negotiable</label>
-            </div>
+                    <div class="form-group full-width">
+                        <label class="form-label">
+                            <i class="fas fa-list"></i>
+                            Features (comma-separated)
+                        </label>
+                        <textarea name="features" class="form-control" placeholder="e.g., Sunroof, ABS, Cruise Control"></textarea>
+                    </div>
+                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Insurance Valid Till:</label>
-                <input type="date" name="insurance_valid_till" class="form-control">
-            </div>
+                <div class="checkbox-group">
+                    <h4 class="checkbox-title">Additional Features</h4>
+                    <div class="checkbox-container">
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="gps_enabled" class="checkbox-input" id="gps">
+                            <label class="checkbox-label" for="gps">GPS Enabled</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="bluetooth_connectivity" class="checkbox-input" id="bluetooth">
+                            <label class="checkbox-label" for="bluetooth">Bluetooth Connectivity</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="negotiable" class="checkbox-input" id="negotiable" checked>
+                            <label class="checkbox-label" for="negotiable">Price Negotiable</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" name="warranty_available" class="checkbox-input" id="warranty">
+                            <label class="checkbox-label" for="warranty">Warranty Available</label>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="mb-3 form-check">
-                <input type="checkbox" name="warranty_available" class="form-check-input">
-                <label class="form-check-label">Warranty Available</label>
-            </div>
-
-            <button type="submit" class="btn btn-success w-100">Save Features</button>
-        </form>
+                <button type="submit" class="submit-button">
+                    <i class="fas fa-save"></i>
+                    Save Features
+                </button>
+            </form>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>About AutoSphere</h3>
+                <p>Leading the digital transformation of automotive retail with innovative solutions for showrooms and dealers.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Add Vehicle</a></li>
+                    <li><a href="#">Manage Bookings</a></li>
+                    <li><a href="#">Profile</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Support</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> +1 234 567 890</li>
+                    <li><i class="fas fa-envelope"></i> support@autosphere.com</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

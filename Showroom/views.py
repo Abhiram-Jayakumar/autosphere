@@ -224,12 +224,29 @@ def add_vehicle_features(request, vehicle_id):
 
 def showroom_bookings(request):
     if "sid" not in request.session:
-        return redirect("Showroom:login") 
+        return redirect("Showroom:login")  
 
     showroom_id = request.session["sid"]
 
     test_drives = TestDriveBooking.objects.filter(vehicle__showroom_dealer_id=showroom_id).order_by("-date", "-time")
     rentals = RentalBooking.objects.filter(vehicle__showroom_dealer_id=showroom_id).order_by("-rental_date")
+
+    # Attach customer/dealer details to each booking
+    for booking in test_drives:
+        if booking.customer:
+            booking.booked_by = booking.customer
+            booking.booked_by_type = "Customer"
+        elif booking.dealer:
+            booking.booked_by = booking.dealer
+            booking.booked_by_type = "Dealer"
+
+    for booking in rentals:
+        if booking.customer:
+            booking.booked_by = booking.customer
+            booking.booked_by_type = "Customer"
+        elif booking.dealer:
+            booking.booked_by = booking.dealer
+            booking.booked_by_type = "Dealer"
 
     return render(
         request,
