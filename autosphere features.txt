@@ -1,0 +1,42 @@
+                                                                        AUTOSPHERE
+                                               ----------------------------------------------------------------
+1.customer
+2.dealer
+3.admin
+4.showdealer
+
+1.CUSTOMER
+=-===-=-=-=-=-=---------
+
+1* Register and login ✅
+2*adding vehicles for selling ✅
+3*viewing vehicles for buying ✅
+4*booking vehicles and payment✅
+5*profile management✅
+6*Booking for rent ✅
+7*Feedback for rent vehicles✅
+
+2.DEALER
+--------------------------
+
+1*Register and login ✅
+2*adding vehicles for selling and rent✅
+3*viewing vehicles for buying✅
+4*booking vehicles and payment✅
+5*profile management✅
+6*viewing profit✅
+
+3.ADMIN
+------------------------------
+
+1*Accept dealer,customer,showroom ✅
+2*viewing complaints from all users ✅
+3*overall performance ✅
+
+4.SHOWROOM DEALER
+------------------------------------
+1*Register and login ✅
+2*adding vehicles for selling and rent ✅
+3*profile management✅
+4*viewing profit ✅
+
